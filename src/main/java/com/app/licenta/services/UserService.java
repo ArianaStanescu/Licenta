@@ -42,11 +42,6 @@ public class UserService {
     }
 
     public void deleteById(Integer id) {
-//        User user = userRepository.findById(id).orElseThrow();
-//        user.setEmail(null);
-//        user.setFirstName(null);
-//        user.setLastName(null);
-//        userRepository.saveAndFlush(user);
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
         } else {

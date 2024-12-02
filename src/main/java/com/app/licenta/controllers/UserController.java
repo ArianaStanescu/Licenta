@@ -1,7 +1,7 @@
 package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.UserDto;
-import com.app.licenta.dtos.mappers.UserMapper;
+import com.app.licenta.mappers.UserMapper;
 import com.app.licenta.entities.User;
 import com.app.licenta.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

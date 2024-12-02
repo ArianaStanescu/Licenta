@@ -1,4 +1,4 @@
-package com.app.licenta.dtos.mappers;
+package com.app.licenta.mappers;
 
 import com.app.licenta.dtos.UserDto;
 import com.app.licenta.entities.User;
