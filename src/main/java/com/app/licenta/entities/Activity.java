@@ -18,31 +18,22 @@ public class Activity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price")
-    private Double price;
-
     @Column(name = "category")
-    private String category;
-
-    @Column(name = "age_range")
-    private String ageRange;
+    @Enumerated(EnumType.STRING)
+    private ActivityCategory category;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "spots_available")
-    private Integer spotsAvailable;
-
     @ManyToOne
-    @JoinColumn(name = "trainer_id", nullable = false)
+    @JoinColumn(name = "trainer_id")
     private Trainer trainer;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(
-            name = "activity_child",
-            joinColumns = @JoinColumn(name = "activity_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_id")
-    )
-    private Set<Child> children = new HashSet<>();
+    @OneToMany(mappedBy = "activity", cascade = {})
+    private Set<Group> groups = new HashSet<>();
+
+    @OneToMany(mappedBy = "activity", cascade = {})
+    private Set<Ad> ads = new HashSet<>();
+
 }

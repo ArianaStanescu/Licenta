@@ -33,72 +33,13 @@ public class Trainer {
     @Temporal(TemporalType.DATE)
     private LocalDate birthDate;
 
-    @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "trainer", cascade = {})
     private Set<Activity> activities = new HashSet<>();
 
-    public Gender getGender() {
-        return gender;
-    }
+//    @OneToMany(mappedBy = "trainer", cascade = {})
+//    private Set<Ad> ads = new HashSet<>();
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Set<Activity> getActivities() {
-        return activities;
-    }
-
-    public void setActivities(Set<Activity> activities) {
-        this.activities = activities;
-    }
-
+//    @OneToMany(mappedBy = "trainer", cascade = {})
+//    private Set<Group> groups = new HashSet<>();
 
 }

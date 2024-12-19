@@ -28,57 +28,18 @@ public class Child {
     private LocalDate birthDate;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", nullable = false)
+    @JoinColumn(name = "parent_id")
     private Parent parent;
 
+//    @ManyToMany(mappedBy = "children")
+//    private Set<Activity> activities = new HashSet<>();
+//
+//    @ManyToMany(mappedBy = "children")
+//    private Set<Ad> ads = new HashSet<>();
+
     @ManyToMany(mappedBy = "children")
-    private Set<Activity> activities = new HashSet<>();
+    private Set<Group> groups = new HashSet<>();
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Parent getParent() {
-        return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
-    }
+    @OneToMany(mappedBy = "child", cascade = {})
+    private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
 }
