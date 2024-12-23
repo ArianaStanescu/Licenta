@@ -47,6 +47,5 @@ public class UserService {
         } else {
             throw new EntityNotFoundException("User with id " + id + " not found");
         }
-
     }
 }

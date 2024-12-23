@@ -28,16 +28,8 @@ public class Parent {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "parent", cascade = {})
+    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Child> children = new HashSet<>();
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
 
     public Integer getId() {
         return id;
@@ -79,6 +71,14 @@ public class Parent {
         this.phoneNumber = phoneNumber;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     public Set<Child> getChildren() {
         return children;
     }
@@ -86,5 +86,4 @@ public class Parent {
     public void setChildren(Set<Child> children) {
         this.children = children;
     }
-
 }

@@ -5,7 +5,6 @@ import com.app.licenta.entities.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,29 +16,23 @@ public class ActivityMapper {
 
     public Activity activityDtoToActivity(ActivityDto activityDto) {
         Activity activity = new Activity();
-//        activity.setId(activityDto.getId());
-//        activity.setTitle(activityDto.getTitle());
-//        activity.setDescription(activityDto.getDescription());
-//        activity.setPrice(activityDto.getPrice());
-//        activity.setCategory(activityDto.getCategory());
-//        activity.setAgeRange(activityDto.getAgeRange());
-//        activity.setGender(activityDto.getGender());
-//        activity.setSpotsAvailable(activityDto.getSpotsAvailable());
-//        activity.setTrainer(trainerMapper.trainerDtoToTrainer(activityDto.getTrainer()));
+        //activity.setId(activityDto.getId());
+        activity.setTitle(activityDto.getTitle());
+        activity.setDescription(activityDto.getDescription());
+        activity.setCategory(activityDto.getCategory());
+        activity.setGender(activityDto.getGender());
+        activity.setTrainer(trainerMapper.trainerDtoToTrainer(activityDto.getTrainer()));
         return activity;
     }
 
     public ActivityDto activityToActivityDto(Activity activity) {
         ActivityDto activityDto = new ActivityDto();
-//        activityDto.setId(activity.getId());
-//        activityDto.setTitle(activity.getTitle());
-//        activityDto.setDescription(activity.getDescription());
-//        activityDto.setPrice(activity.getPrice());
-//        activityDto.setCategory(activity.getCategory());
-//        activityDto.setAgeRange(activity.getAgeRange());
-//        activityDto.setGender(activity.getGender());
-//        activityDto.setSpotsAvailable(activity.getSpotsAvailable());
-//        activityDto.setTrainer(trainerMapper.trainerToTrainerDto(activity.getTrainer()));
+        activityDto.setId(activity.getId());
+        activityDto.setTitle(activity.getTitle());
+        activityDto.setDescription(activity.getDescription());
+        activityDto.setCategory(activity.getCategory());
+        activityDto.setGender(activity.getGender());
+        activityDto.setTrainer(trainerMapper.trainerToTrainerDto(activity.getTrainer()));
         return activityDto;
     }
 

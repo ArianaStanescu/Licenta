@@ -1,22 +1,11 @@
-package com.app.licenta.entities;
-
-import jakarta.persistence.*;
+package com.app.licenta.dtos;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "session")
-@Table(name = "session", schema = "public")
-public class Session {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class SessionDto {
     private Integer id;
-
-    @Column(name = "date_time")
     private LocalDateTime dateTime;
-
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    private GroupDto group;
 
     public Integer getId() {
         return id;
@@ -34,11 +23,11 @@ public class Session {
         this.dateTime = dateTime;
     }
 
-    public Group getGroup() {
+    public GroupDto getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(GroupDto group) {
         this.group = group;
     }
 }

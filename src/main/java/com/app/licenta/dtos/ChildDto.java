@@ -1,11 +1,8 @@
 package com.app.licenta.dtos;
 
-import com.app.licenta.entities.Activity;
 import com.app.licenta.entities.Gender;
-import com.app.licenta.entities.Parent;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 public class ChildDto {
     private Integer id;
@@ -14,7 +11,6 @@ public class ChildDto {
     private Gender gender;
     private LocalDate birthDate;
     private ParentDto parent;
-    private Set<ActivityDto> activities;
 
     public Integer getId() {
         return id;
@@ -64,11 +60,4 @@ public class ChildDto {
         this.parent = parent;
     }
 
-    public Set<ActivityDto> getActivities() {
-        return activities;
-    }
-
-    public void setActivities(Set<ActivityDto> activities) {
-        this.activities = activities;
-    }
 }

@@ -21,4 +21,35 @@ public class EnrollmentRequest {
     @Column(name = "status")
     private EnrollmentStatus status;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Ad getAd() {
+        return ad;
+    }
+
+    public void setAd(Ad ad) {
+        this.ad = ad;
+    }
+
+    public Child getChild() {
+        return child;
+    }
+
+    public void setChild(Child child) {
+        this.child = child;
+    }
+
+    public EnrollmentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EnrollmentStatus status) {
+        this.status = status;
+    }
 }

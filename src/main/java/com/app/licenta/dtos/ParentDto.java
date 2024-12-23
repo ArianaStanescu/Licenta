@@ -1,9 +1,7 @@
 package com.app.licenta.dtos;
 
-import com.app.licenta.entities.Child;
 import com.app.licenta.entities.Gender;
 
-import java.util.Set;
 
 public class ParentDto {
     private Integer id;
@@ -12,7 +10,6 @@ public class ParentDto {
     private String email;
     private String phoneNumber;
     private Gender gender;
-    private Set<ChildDto> children;
 
     public Integer getId() {
         return id;
@@ -62,11 +59,4 @@ public class ParentDto {
         this.gender = gender;
     }
 
-    public Set<ChildDto> getChildren() {
-        return children;
-    }
-
-    public void setChildren(Set<ChildDto> children) {
-        this.children = children;
-    }
 }
