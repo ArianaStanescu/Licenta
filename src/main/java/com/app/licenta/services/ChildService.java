@@ -27,6 +27,21 @@ public class ChildService {
         return childRepository.findAllByParentId(parentId);
     }
 
+    public Child update(Integer id, Child child) {
+        if (childRepository.existsById(id)) {
+            Child childToUpdate = childRepository.getById(id);
+            childToUpdate.setFirstName(child.getFirstName());
+            childToUpdate.setLastName(child.getLastName());
+            childToUpdate.setGender(child.getGender());
+            childToUpdate.setBirthDate(child.getBirthDate());
+
+            childRepository.save(childToUpdate);
+            return childToUpdate;
+        } else {
+            throw new EntityNotFoundException("Child with id " + id + " not found");
+        }
+    }
+
     public void deleteById(Integer id) {
         if (childRepository.existsById(id)) {
             childRepository.deleteById(id);

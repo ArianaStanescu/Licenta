@@ -19,12 +19,6 @@ public class TrainerController {
     @Autowired
     private TrainerMapper trainerMapper;
 
-    @Autowired
-    private ActivityService activityService;
-
-    @Autowired
-    private ActivityMapper activityMapper;
-
     @GetMapping("/{id}")
     public TrainerDto get(@PathVariable Integer id) {
         Trainer trainer = trainerService.getById(id);
@@ -43,32 +37,14 @@ public class TrainerController {
         return trainerMapper.trainerToTrainerDto(createdTrainer);
     }
 
-    //update
+    @PutMapping("/{id}")
+    public TrainerDto update(@RequestBody TrainerDto trainerDto, @PathVariable Integer id) {
+        return trainerMapper.trainerToTrainerDto(trainerService.update(id, trainerMapper.trainerDtoToTrainer(trainerDto)));
+    }
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {
         trainerService.deleteById(id);
     }
 
-//    @PatchMapping("/create-activity/{id}")
-//    public TrainerDto createChild(@RequestBody ActivityCreateDto activityCreateDto, @PathVariable Integer id) {
-//        Trainer trainer = trainerService.getById(id);
-//
-//        activityCreateDto.setTrainer(trainerMapper.trainerToTrainerDto(trainer));
-//
-//        Activity activityToCreate = activityMapper.activityCreateDtoToActivity(activityCreateDto);
-//        activityToCreate.setTrainer(trainer);
-//        Activity createdActivityToCreate = activityService.createActivity(activityToCreate);
-//        trainer.getActivities().add(createdActivityToCreate);
-//        return trainerMapper.trainerToTrainerDto(trainer);
-//    }
-//
-//    @DeleteMapping("/delete-activity/{trainerId}/{activityId}")
-//    public TrainerDto deleteActivity(@PathVariable Integer trainerId, @PathVariable Integer activityId) {
-//        Trainer trainer = trainerService.getById(trainerId);
-//        Activity activityToDelete = activityService.getById(activityId);
-//        activityService.deleteById(activityId);
-//        trainer.getActivities().remove(activityToDelete);
-//        return trainerMapper.trainerToTrainerDto(trainer);
-//    }
 }

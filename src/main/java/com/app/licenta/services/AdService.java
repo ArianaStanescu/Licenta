@@ -31,7 +31,27 @@ public class AdService {
         return adRepository.findAllByActivityId(activityId);
     }
 
-    // update
+    public Ad update(Integer id, Ad ad) {
+        if (adRepository.existsById(id)) {
+            Ad adToUpdate = adRepository.getById(id);
+            adToUpdate.setTitle(ad.getTitle());
+            adToUpdate.setDescription(ad.getDescription());
+            adToUpdate.setPrice(ad.getPrice());
+            adToUpdate.setCategory(ad.getCategory());
+            adToUpdate.setMinAge(ad.getMinAge());
+            adToUpdate.setMaxAge(ad.getMaxAge());
+            adToUpdate.setGender(ad.getGender());
+            adToUpdate.setStartDate(ad.getStartDate());
+            adToUpdate.setEndDate(ad.getEndDate());
+            adToUpdate.setStatus(ad.getStatus());
+            adToUpdate.setTotalSpots(ad.getTotalSpots());
+
+            adRepository.save(adToUpdate);
+            return adToUpdate;
+        } else {
+            throw new EntityNotFoundException("Ad with id " + id + " not found");
+        }
+    }
 
 //    public void deleteById(Integer id) {
 //        if (activityRepository.existsById(id)) {

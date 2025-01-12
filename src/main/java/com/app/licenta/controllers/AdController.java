@@ -1,6 +1,8 @@
 package com.app.licenta.controllers;
 
+import com.app.licenta.dtos.ActivityUpdateDto;
 import com.app.licenta.dtos.AdDto;
+import com.app.licenta.dtos.AdUpdateDto;
 import com.app.licenta.entities.Activity;
 import com.app.licenta.entities.Ad;
 import com.app.licenta.mappers.ActivityMapper;
@@ -51,7 +53,10 @@ public class AdController {
         return adMapper.adToAdDto(createdAd);
     }
 
-    //update
+    @PutMapping("/{id}")
+    public AdUpdateDto update(@RequestBody AdUpdateDto adUpdateDto, @PathVariable Integer id) {
+        return adMapper.adToAdUpdateDto(adService.update(id, adMapper.adUpdateDtoToAd(adUpdateDto)));
+    }
 
 
 //    @DeleteMapping("/{id}")

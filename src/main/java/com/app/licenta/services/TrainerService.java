@@ -27,7 +27,23 @@ public class TrainerService {
         return trainerRepository.findAll();
     }
 
-    // update
+    public Trainer update(Integer id, Trainer trainer) {
+        if (trainerRepository.existsById(id)) {
+            Trainer trainerToUpdate = trainerRepository.getById(id);
+            trainerToUpdate.setFirstName(trainer.getFirstName());
+            trainerToUpdate.setLastName(trainer.getLastName());
+            trainerToUpdate.setGender(trainer.getGender());
+            trainerToUpdate.setBirthDate(trainer.getBirthDate());
+            trainerToUpdate.setPhoneNumber(trainer.getPhoneNumber());
+            trainerToUpdate.setEmail(trainer.getEmail());
+            trainerToUpdate.setActivities(trainer.getActivities());
+
+            trainerRepository.save(trainerToUpdate);
+            return trainerToUpdate;
+        } else {
+            throw new EntityNotFoundException("Trainer with id " + id + " not found");
+        }
+    }
 
     public void deleteById(Integer id) {
         if (trainerRepository.existsById(id)) {

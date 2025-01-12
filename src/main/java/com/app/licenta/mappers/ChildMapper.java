@@ -1,6 +1,7 @@
 package com.app.licenta.mappers;
 
 import com.app.licenta.dtos.ChildDto;
+import com.app.licenta.dtos.ChildUpdateDto;
 import com.app.licenta.entities.Child;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,5 +39,24 @@ public class ChildMapper {
 
     public Set<ChildDto> childListToChildDtoList(Set<Child> childList) {
         return childList.stream().map(this::childToChildDto).collect(Collectors.toSet());
+    }
+
+    public Child childUpdateDtoToChild(ChildUpdateDto childUpdateDto) {
+        Child child = new Child();
+        child.setFirstName(childUpdateDto.getFirstName());
+        child.setLastName(childUpdateDto.getLastName());
+        child.setGender(childUpdateDto.getGender());
+        child.setBirthDate(childUpdateDto.getBirthDate());
+        return child;
+    }
+
+    public ChildUpdateDto childToChildUpdateDto(Child child) {
+        ChildUpdateDto childUpdateDto = new ChildUpdateDto();
+        childUpdateDto.setId(child.getId());
+        childUpdateDto.setFirstName(child.getFirstName());
+        childUpdateDto.setLastName(child.getLastName());
+        childUpdateDto.setGender(child.getGender());
+        childUpdateDto.setBirthDate(child.getBirthDate());
+        return childUpdateDto;
     }
 }

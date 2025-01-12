@@ -1,6 +1,7 @@
 package com.app.licenta.mappers;
 
 import com.app.licenta.dtos.AdDto;
+import com.app.licenta.dtos.AdUpdateDto;
 import com.app.licenta.entities.Ad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,5 +55,40 @@ public class AdMapper {
 
     public Set<AdDto> adListToAdDtoList(Set<Ad> adList){
         return adList.stream().map(this::adToAdDto).collect(Collectors.toSet());
+    }
+
+    public Ad adUpdateDtoToAd(AdUpdateDto adUpdateDto) {
+        Ad ad = new Ad();
+        ad.setTitle(adUpdateDto.getTitle());
+        ad.setDescription(adUpdateDto.getDescription());
+        ad.setPrice(adUpdateDto.getPrice());
+        ad.setCategory(adUpdateDto.getCategory());
+        ad.setMinAge(adUpdateDto.getMinAge());
+        ad.setMaxAge(adUpdateDto.getMaxAge());
+        ad.setGender(adUpdateDto.getGender());
+        ad.setStartDate(adUpdateDto.getStartDate());
+        ad.setEndDate(adUpdateDto.getEndDate());
+        ad.setStatus(adUpdateDto.getStatus());
+        ad.setTotalSpots(adUpdateDto.getTotalSpots());
+        ad.setActivityDays(adUpdateDto.getActivityDays());
+        return ad;
+    }
+
+    public AdUpdateDto adToAdUpdateDto(Ad ad) {
+        AdUpdateDto adUpdateDto = new AdUpdateDto();
+        adUpdateDto.setId(ad.getId());
+        adUpdateDto.setTitle(ad.getTitle());
+        adUpdateDto.setDescription(ad.getDescription());
+        adUpdateDto.setPrice(ad.getPrice());
+        adUpdateDto.setCategory(ad.getCategory());
+        adUpdateDto.setMinAge(ad.getMinAge());
+        adUpdateDto.setMaxAge(ad.getMaxAge());
+        adUpdateDto.setGender(ad.getGender());
+        adUpdateDto.setStartDate(ad.getStartDate());
+        adUpdateDto.setEndDate(ad.getEndDate());
+        adUpdateDto.setStatus(ad.getStatus());
+        adUpdateDto.setTotalSpots(ad.getTotalSpots());
+        adUpdateDto.setActivityDays(ad.getActivityDays());
+        return adUpdateDto;
     }
 }

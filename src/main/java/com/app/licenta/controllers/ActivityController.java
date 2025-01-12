@@ -1,6 +1,8 @@
 package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.ActivityDto;
+import com.app.licenta.dtos.ActivityUpdateDto;
+import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Activity;
 import com.app.licenta.entities.Trainer;
 import com.app.licenta.mappers.ActivityMapper;
@@ -50,7 +52,10 @@ public class ActivityController {
         return activityMapper.activityToActivityDto(createdActivity);
     }
 
-    //update
+    @PutMapping("/{id}")
+    public ActivityUpdateDto update(@RequestBody ActivityUpdateDto activityUpdateDto, @PathVariable Integer id) {
+        return activityMapper.activityToActivityUpdateDto(activityService.update(id, activityMapper.activityUpdateDtoToActivity(activityUpdateDto)));
+    }
 
 
     @DeleteMapping("/{id}")

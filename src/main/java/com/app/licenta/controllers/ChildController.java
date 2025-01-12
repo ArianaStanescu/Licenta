@@ -1,6 +1,7 @@
 package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.ChildDto;
+import com.app.licenta.dtos.ChildUpdateDto;
 import com.app.licenta.entities.Child;
 import com.app.licenta.entities.Parent;
 import com.app.licenta.mappers.ChildMapper;
@@ -52,8 +53,10 @@ public class ChildController {
         return childMapper.childToChildDto(createdChild);
     }
 
-    //update
-
+    @PutMapping("/{id}")
+    public ChildUpdateDto update(@RequestBody ChildUpdateDto childUpdateDto, @PathVariable Integer id) {
+        return childMapper.childToChildUpdateDto(childService.update(id, childMapper.childUpdateDtoToChild(childUpdateDto)));
+    }
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {

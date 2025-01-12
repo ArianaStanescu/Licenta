@@ -37,6 +37,13 @@ public class GroupService {
 
     // update
 
+    public Group update(Group group) {
+        if (!groupRepository.existsById(group.getId())) {
+            throw new EntityNotFoundException("Group with id " + group.getId() + " not found");
+        }
+        return groupRepository.save(group);
+    }
+
 //    public void deleteById(Integer id) {
 //        if (activityRepository.existsById(id)) {
 //            activityRepository.deleteById(id);

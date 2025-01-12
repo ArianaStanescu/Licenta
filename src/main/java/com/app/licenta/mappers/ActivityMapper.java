@@ -1,6 +1,7 @@
 package com.app.licenta.mappers;
 
 import com.app.licenta.dtos.ActivityDto;
+import com.app.licenta.dtos.ActivityUpdateDto;
 import com.app.licenta.entities.Activity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,5 +43,24 @@ public class ActivityMapper {
 
     public Set<Activity> activityDtoListToActivityList(Set<ActivityDto> activityDtoList){
         return activityDtoList.stream().map(this::activityDtoToActivity).collect(Collectors.toSet());
+    }
+
+    public Activity activityUpdateDtoToActivity(ActivityUpdateDto activityUpdateDto) {
+        Activity activity = new Activity();
+        activity.setTitle(activityUpdateDto.getTitle());
+        activity.setDescription(activityUpdateDto.getDescription());
+        activity.setCategory(activityUpdateDto.getCategory());
+        activity.setGender(activityUpdateDto.getGender());
+        return activity;
+    }
+
+    public ActivityUpdateDto activityToActivityUpdateDto(Activity activity) {
+        ActivityUpdateDto activityUpdateDto = new ActivityUpdateDto();
+        activityUpdateDto.setId(activity.getId());
+        activityUpdateDto.setTitle(activity.getTitle());
+        activityUpdateDto.setDescription(activity.getDescription());
+        activityUpdateDto.setCategory(activity.getCategory());
+        activityUpdateDto.setGender(activity.getGender());
+        return activityUpdateDto;
     }
 }
