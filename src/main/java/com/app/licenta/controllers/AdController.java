@@ -1,6 +1,5 @@
 package com.app.licenta.controllers;
 
-import com.app.licenta.dtos.ActivityUpdateDto;
 import com.app.licenta.dtos.AdDto;
 import com.app.licenta.dtos.AdUpdateDto;
 import com.app.licenta.entities.Activity;

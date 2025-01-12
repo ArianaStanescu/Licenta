@@ -2,9 +2,7 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.*;
 import com.app.licenta.entities.Trainer;
-import com.app.licenta.mappers.ActivityMapper;
 import com.app.licenta.mappers.TrainerMapper;
-import com.app.licenta.services.ActivityService;
 import com.app.licenta.services.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

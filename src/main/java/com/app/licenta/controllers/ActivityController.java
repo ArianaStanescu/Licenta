@@ -2,7 +2,6 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.ActivityDto;
 import com.app.licenta.dtos.ActivityUpdateDto;
-import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Activity;
 import com.app.licenta.entities.Trainer;
 import com.app.licenta.mappers.ActivityMapper;
