@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class SessionGetDto {
     private Integer id;
     private LocalDateTime dateTime;
+    private String note;
 
     public Integer getId() {
         return id;
@@ -20,5 +21,13 @@ public class SessionGetDto {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

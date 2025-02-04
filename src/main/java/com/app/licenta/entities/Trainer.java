@@ -36,6 +36,12 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", cascade = {})
     private Set<Activity> activities = new HashSet<>();
 
+    @OneToMany(mappedBy = "authorTrainer", cascade = {})
+    private Set<SessionComment> sessionComments = new HashSet<>();
+
+    @OneToMany(mappedBy = "readByTrainer", cascade = {})
+    private Set<SessionComment> readSessionComments = new HashSet<>();
+
 //    @OneToMany(mappedBy = "trainer", cascade = {})
 //    private Set<Ad> ads = new HashSet<>();
 

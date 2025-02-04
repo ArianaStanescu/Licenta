@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 public class SessionDto {
     private Integer id;
     private LocalDateTime dateTime;
+    private String note;
     private GroupDto group;
 
     public Integer getId() {
@@ -29,5 +30,13 @@ public class SessionDto {
 
     public void setGroup(GroupDto group) {
         this.group = group;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

@@ -19,6 +19,7 @@ public class SessionMapper {
         Session session = new Session();
         //session.setId(sessionDto.getId());
         session.setDateTime(sessionDto.getDateTime());
+        session.setNote(sessionDto.getNote());
         return session;
     }
 
@@ -26,6 +27,7 @@ public class SessionMapper {
         SessionGetDto sessionGetDto = new SessionGetDto();
         sessionGetDto.setId(session.getId());
         sessionGetDto.setDateTime(session.getDateTime());
+        sessionGetDto.setNote(session.getNote());
         return sessionGetDto;
     }
 
@@ -37,6 +39,7 @@ public class SessionMapper {
         SessionDto sessionDto = new SessionDto();
         sessionDto.setId(session.getId());
         sessionDto.setDateTime(session.getDateTime());
+        sessionDto.setNote(session.getNote());
         sessionDto.setGroup(groupMapper.groupToGroupDto(session.getGroup()));
         return sessionDto;
     }
