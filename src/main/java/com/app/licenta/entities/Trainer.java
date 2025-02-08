@@ -36,13 +36,18 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Activity> activities = new HashSet<>();
 
-    public Gender getGender() {
-        return gender;
-    }
+//    @OneToMany(mappedBy = "authorTrainer", cascade = {})
+//    private Set<SessionComment> sessionComments = new HashSet<>();
+//
+//    @OneToMany(mappedBy = "readByTrainer", cascade = {})
+//    private Set<SessionComment> readSessionComments = new HashSet<>();
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
+//    @OneToMany(mappedBy = "trainer", cascade = {})
+//    private Set<Ad> ads = new HashSet<>();
+
+//    @OneToMany(mappedBy = "trainer", cascade = {})
+//    private Set<Group> groups = new HashSet<>();
+
 
     public Integer getId() {
         return id;
@@ -76,20 +81,28 @@ public class Trainer {
         this.email = email;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Set<Activity> getActivities() {
@@ -99,6 +112,4 @@ public class Trainer {
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
     }
-
-
 }

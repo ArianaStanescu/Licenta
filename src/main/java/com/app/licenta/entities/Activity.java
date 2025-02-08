@@ -18,31 +18,85 @@ public class Activity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price")
-    private Double price;
-
     @Column(name = "category")
-    private String category;
-
-    @Column(name = "age_range")
-    private String ageRange;
+    @Enumerated(EnumType.STRING)
+    private ActivityCategory category;
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "spots_available")
-    private Integer spotsAvailable;
-
     @ManyToOne
-    @JoinColumn(name = "trainer_id", nullable = false)
+    @JoinColumn(name = "trainer_id")
     private Trainer trainer;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(
-            name = "activity_child",
-            joinColumns = @JoinColumn(name = "activity_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_id")
-    )
-    private Set<Child> children = new HashSet<>();
+    @OneToMany(mappedBy = "activity", cascade ={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<Group> groups = new HashSet<>();
+
+    @OneToMany(mappedBy = "activity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<Ad> ads = new HashSet<>();
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Set<Ad> getAds() {
+        return ads;
+    }
+
+    public void setAds(Set<Ad> ads) {
+        this.ads = ads;
+    }
+
+    public Trainer getTrainer() {
+        return trainer;
+    }
+
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public ActivityCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ActivityCategory category) {
+        this.category = category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -28,11 +28,20 @@ public class Child {
     private LocalDate birthDate;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", nullable = false)
+    @JoinColumn(name = "parent_id")
     private Parent parent;
 
-    @ManyToMany(mappedBy = "children")
-    private Set<Activity> activities = new HashSet<>();
+//    @ManyToMany(mappedBy = "children")
+//    private Set<Activity> activities = new HashSet<>();
+//
+//    @ManyToMany(mappedBy = "children")
+//    private Set<Ad> ads = new HashSet<>();
+
+    @ManyToMany(mappedBy = "children", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Group> groups = new HashSet<>();
+
+    @OneToMany(mappedBy = "child", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -80,5 +89,21 @@ public class Child {
 
     public void setParent(Parent parent) {
         this.parent = parent;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+    }
+
+    public Set<EnrollmentRequest> getEnrollmentRequests() {
+        return enrollmentRequests;
+    }
+
+    public void setEnrollmentRequests(Set<EnrollmentRequest> enrollmentRequests) {
+        this.enrollmentRequests = enrollmentRequests;
     }
 }
