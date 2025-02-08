@@ -31,9 +31,6 @@ public class Parent {
     @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Child> children = new HashSet<>();
 
-    @OneToMany(mappedBy = "authorParent", cascade = {})
-    private Set<SessionComment> sessionComments = new HashSet<>();
-
     public Integer getId() {
         return id;
     }

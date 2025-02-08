@@ -1,6 +1,7 @@
 package com.app.licenta.services;
 
 import com.app.licenta.entities.Child;
+import com.app.licenta.entities.Group;
 import com.app.licenta.repositories.ChildRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,11 @@ public class ChildService {
     }
 
     public void deleteById(Integer id) {
-        if (childRepository.existsById(id)) {
-            childRepository.deleteById(id);
-        } else {
-            throw new EntityNotFoundException("Child with id " + id + " not found");
+        Child childToDelete = childRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Child with id " + id + " not found"));
+        for (Group group : childToDelete.getGroups()) {
+            group.getChildren().remove(childToDelete);
         }
+        childRepository.deleteById(id);
     }
 }

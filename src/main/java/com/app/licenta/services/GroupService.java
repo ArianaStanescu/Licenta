@@ -44,12 +44,7 @@ public class GroupService {
         return groupRepository.save(group);
     }
 
-//    public void deleteById(Integer id) {
-//        if (activityRepository.existsById(id)) {
-//            activityRepository.deleteById(id);
-//        } else {
-//            throw new EntityNotFoundException("Activity with id " + id + " not found");
-//        }
-//
-//    }
+    public void deleteById(Integer id) {
+        groupRepository.deleteById(id);
+    }
 }

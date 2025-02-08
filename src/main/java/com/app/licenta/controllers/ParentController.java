@@ -1,6 +1,8 @@
 package com.app.licenta.controllers;
 
+import com.app.licenta.dtos.ChildUpdateDto;
 import com.app.licenta.dtos.ParentDto;
+import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Parent;
 import com.app.licenta.mappers.ParentMapper;
 import com.app.licenta.services.ParentService;
@@ -24,12 +26,7 @@ public class ParentController {
         Parent parent = parentService.getById(id);
         return parentMapper.parentToParentDto(parent);
     }
-//
-//    @GetMapping("email/{email}")
-//    public UserDto getByEmail(@PathVariable String email) {
-//        return userMapper.userToUserDto(userService.getByEmail(email));
-//    }
-//
+
     @GetMapping("/list")
     public List<ParentDto> findAll() {
         return parentMapper.parentListToParentDtoList(parentService.findAll());
@@ -42,7 +39,10 @@ public class ParentController {
         return parentMapper.parentToParentDto(createdParent);
     }
 
-    //update
+    @PutMapping("/{id}")
+    public ParentDto update(@RequestBody ParentDto parentDto, @PathVariable Integer id) {
+        return parentMapper.parentToParentDto(parentService.update(id, parentMapper.parentDtoToParent(parentDto)));
+    }
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {

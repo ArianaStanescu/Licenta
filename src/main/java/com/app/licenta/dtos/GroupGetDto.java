@@ -18,7 +18,7 @@ public class GroupGetDto {
     private Gender gender;
     private ChildrenGroupStatus status;
     private Set<Day> activityDays = new HashSet<>();
-    private Set<Child> children = new HashSet<>();
+    private Set<ChildDto> children = new HashSet<>();
     private ActivityDto activity;
 
     public Integer getId() {
@@ -93,11 +93,11 @@ public class GroupGetDto {
         this.activityDays = activityDays;
     }
 
-    public Set<Child> getChildren() {
+    public Set<ChildDto> getChildren() {
         return children;
     }
 
-    public void setChildren(Set<Child> children) {
+    public void setChildren(Set<ChildDto> children) {
         this.children = children;
     }
 

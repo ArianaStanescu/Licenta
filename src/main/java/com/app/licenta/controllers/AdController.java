@@ -57,9 +57,8 @@ public class AdController {
         return adMapper.adToAdUpdateDto(adService.update(id, adMapper.adUpdateDtoToAd(adUpdateDto)));
     }
 
-
-//    @DeleteMapping("/{id}")
-//    public void deleteById(@PathVariable Integer id) {
-//        activityService.deleteById(id);
-//    }
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Integer id) {
+        adService.deleteById(id);
+    }
 }

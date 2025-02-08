@@ -53,12 +53,7 @@ public class AdService {
         }
     }
 
-//    public void deleteById(Integer id) {
-//        if (activityRepository.existsById(id)) {
-//            activityRepository.deleteById(id);
-//        } else {
-//            throw new EntityNotFoundException("Activity with id " + id + " not found");
-//        }
-//
-//    }
+    public void deleteById(Integer id) {
+        adRepository.deleteById(id);
+    }
 }

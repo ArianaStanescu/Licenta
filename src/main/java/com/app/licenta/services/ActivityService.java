@@ -48,11 +48,6 @@ public class ActivityService {
     }
 
     public void deleteById(Integer id) {
-        if (activityRepository.existsById(id)) {
-            activityRepository.deleteById(id);
-        } else {
-            throw new EntityNotFoundException("Activity with id " + id + " not found");
-        }
-
+        activityRepository.deleteById(id);
     }
 }

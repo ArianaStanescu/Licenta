@@ -29,4 +29,8 @@ public class SessionService {
     }
 
     // update
+
+    public void deleteById(Integer id) {
+        sessionRepository.deleteById(id);
+    }
 }

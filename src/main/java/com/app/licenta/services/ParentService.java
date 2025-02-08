@@ -32,14 +32,22 @@ public class ParentService {
         return parentRepository.findAll();
     }
 
-    // update
-
-    public void deleteById(Integer id) {
+    public Parent update(Integer id, Parent parent) {
         if (parentRepository.existsById(id)) {
-            parentRepository.deleteById(id);
+            Parent parentToUpdate = parentRepository.getById(id);
+            parentToUpdate.setFirstName(parent.getFirstName());
+            parentToUpdate.setLastName(parent.getLastName());
+            parentToUpdate.setEmail(parent.getEmail());
+            parentToUpdate.setPhoneNumber(parent.getPhoneNumber());
+
+            parentRepository.save(parentToUpdate);
+            return parentToUpdate;
         } else {
             throw new EntityNotFoundException("Parent with id " + id + " not found");
         }
+    }
 
+    public void deleteById(Integer id) {
+        parentRepository.deleteById(id);
     }
 }

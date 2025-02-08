@@ -82,8 +82,8 @@ public class GroupController {
     }
 
 
-//    @DeleteMapping("/{id}")
-//    public void deleteById(@PathVariable Integer id) {
-//        activityService.deleteById(id);
-//    }
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Integer id) {
+        groupService.deleteById(id);
+    }
 }

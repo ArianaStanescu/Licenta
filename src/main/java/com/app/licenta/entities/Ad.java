@@ -70,7 +70,7 @@ public class Ad {
 //            inverseJoinColumns = @JoinColumn(name="child_id"))
 //    private Set<Child> children = new HashSet<>();
 
-    @OneToMany(mappedBy = "ad", cascade = {})
+    @OneToMany(mappedBy = "ad", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
 
     public Integer getId() {

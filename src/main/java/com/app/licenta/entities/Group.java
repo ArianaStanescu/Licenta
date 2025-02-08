@@ -54,7 +54,7 @@ public class Group {
 //    @JoinColumn(name = "trainer_id")
 //    private Trainer trainer;
 
-    @ManyToMany(cascade={})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "group_children", schema = "public",
             joinColumns = @JoinColumn(name = "group_id"),
@@ -62,7 +62,7 @@ public class Group {
     )
     private Set<Child> children = new HashSet<>();
 
-    @OneToMany(mappedBy = "group", cascade = {})
+    @OneToMany(mappedBy = "group", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Session> sessions = new HashSet<>();
 
     public Integer getId() {

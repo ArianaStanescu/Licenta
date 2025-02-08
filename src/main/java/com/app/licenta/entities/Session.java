@@ -23,7 +23,7 @@ public class Session {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @OneToMany(mappedBy = "session", cascade = {})
+    @OneToMany(mappedBy = "session", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<SessionComment> comments = new HashSet<>();
 
     public Integer getId() {

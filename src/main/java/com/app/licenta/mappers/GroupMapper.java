@@ -15,6 +15,9 @@ public class GroupMapper {
     @Autowired
     private ActivityMapper activityMapper;
 
+    @Autowired
+    private ChildMapper childMapper;
+
     public Group groupDtoToGroup(GroupDto groupDto) {
         Group group = new Group();
         //group.setId(groupDto.getId());
@@ -61,7 +64,7 @@ public class GroupMapper {
         groupGetDto.setStatus(group.getStatus());
         groupGetDto.setActivityDays(group.getActivityDays());
         groupGetDto.setActivity(activityMapper.activityToActivityDto(group.getActivity()));
-        groupGetDto.setChildren(group.getChildren());
+        groupGetDto.setChildren(group.getChildren().stream().map(child -> childMapper.childToChildDto(child)).collect(Collectors.toSet()));
         return groupGetDto;
     }
 }

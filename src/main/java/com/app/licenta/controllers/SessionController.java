@@ -51,4 +51,9 @@ public class SessionController {
 
         return sessionMapper.sessionToSessionDto(createdSession);
     }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Integer id) {
+        sessionService.deleteById(id);
+    }
 }

@@ -37,10 +37,10 @@ public class Child {
 //    @ManyToMany(mappedBy = "children")
 //    private Set<Ad> ads = new HashSet<>();
 
-    @ManyToMany(mappedBy = "children")
+    @ManyToMany(mappedBy = "children", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Group> groups = new HashSet<>();
 
-    @OneToMany(mappedBy = "child", cascade = {})
+    @OneToMany(mappedBy = "child", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
 
     public Integer getId() {

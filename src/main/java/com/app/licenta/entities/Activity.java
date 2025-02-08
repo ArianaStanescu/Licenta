@@ -30,10 +30,10 @@ public class Activity {
     @JoinColumn(name = "trainer_id")
     private Trainer trainer;
 
-    @OneToMany(mappedBy = "activity", cascade = {})
+    @OneToMany(mappedBy = "activity", cascade ={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Group> groups = new HashSet<>();
 
-    @OneToMany(mappedBy = "activity", cascade = {})
+    @OneToMany(mappedBy = "activity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Ad> ads = new HashSet<>();
 
     public Integer getId() {
