@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-//@ConditionalOnProperty(name = "authorization.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "authorization.enabled", havingValue = "true")
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();

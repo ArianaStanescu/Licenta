@@ -14,7 +14,7 @@ import org.springframework.security.web.firewall.HttpFirewall;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-//@ConditionalOnProperty(name = "authorization.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "authorization.enabled", havingValue = "true")
 public class WebSecurityConfig {
 
     private static final String TRAINER_ROLE = "trainer";
