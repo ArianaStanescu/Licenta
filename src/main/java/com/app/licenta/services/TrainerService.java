@@ -23,6 +23,11 @@ public class TrainerService {
                 .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + id + " not found"));
     }
 
+    public Trainer getByEmail(String email) {
+        return trainerRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with email " + email + " not found"));
+    }
+
     public List<Trainer> findAll() {
         return trainerRepository.findAll();
     }

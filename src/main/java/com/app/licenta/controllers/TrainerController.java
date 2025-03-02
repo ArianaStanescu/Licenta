@@ -23,6 +23,11 @@ public class TrainerController {
         return trainerMapper.trainerToTrainerDto(trainer);
     }
 
+    @GetMapping("email/{email}")
+    public TrainerDto getByEmail(@PathVariable String email) {
+        return trainerMapper.trainerToTrainerDto(trainerService.getByEmail(email));
+    }
+
 //    @GetMapping("/list")
 //    public List<TrainerDto> findAll() {
 //        return trainerMapper.parentListToParentDtoList(trainerService.findAll());

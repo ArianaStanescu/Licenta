@@ -1,8 +1,6 @@
 package com.app.licenta.controllers;
 
-import com.app.licenta.dtos.ChildUpdateDto;
 import com.app.licenta.dtos.ParentDto;
-import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Parent;
 import com.app.licenta.mappers.ParentMapper;
 import com.app.licenta.services.ParentService;
@@ -25,6 +23,11 @@ public class ParentController {
     public ParentDto get(@PathVariable Integer id) {
         Parent parent = parentService.getById(id);
         return parentMapper.parentToParentDto(parent);
+    }
+
+    @GetMapping("email/{email}")
+    public ParentDto getByEmail(@PathVariable String email) {
+        return parentMapper.parentToParentDto(parentService.getByEmail(email));
     }
 
     @GetMapping("/list")
