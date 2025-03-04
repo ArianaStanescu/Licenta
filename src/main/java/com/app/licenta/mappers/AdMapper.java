@@ -30,11 +30,10 @@ public class AdMapper {
         ad.setStatus(adDto.getStatus());
         ad.setTotalSpots(adDto.getTotalSpots());
         ad.setActivityDays(adDto.getActivityDays());
-        ad.setActivity(activityMapper.activityDtoToActivity(adDto.getActivity()));
         return ad;
     }
 
-    public AdDto adToAdDto (Ad ad){
+    public AdDto adToAdDto(Ad ad) {
         AdDto adDto = new AdDto();
         adDto.setId(ad.getId());
         adDto.setTitle(ad.getTitle());
@@ -53,7 +52,7 @@ public class AdMapper {
         return adDto;
     }
 
-    public Set<AdDto> adListToAdDtoList(Set<Ad> adList){
+    public Set<AdDto> adListToAdDtoList(Set<Ad> adList) {
         return adList.stream().map(this::adToAdDto).collect(Collectors.toSet());
     }
 

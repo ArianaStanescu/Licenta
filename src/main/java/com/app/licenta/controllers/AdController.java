@@ -67,18 +67,12 @@ public class AdController {
                 .toList();
     }
 
-    //    @PostMapping(value = "/create/{activityId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},
-//            produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("/create/{activityId}")
-    public AdDto create(@PathVariable Integer activityId, @RequestPart("ad") AdDto adDto, @RequestPart("image") MultipartFile imageFile) throws IOException {
-        Activity activity = activityService.getById(activityId);
-        adDto.setActivity(activityMapper.activityToActivityDto(activity));
+    public AdDto create(@PathVariable Integer activityId,
+                        @RequestPart("ad") AdDto adDto,
+                        @RequestPart("image") MultipartFile imageFile) throws IOException {
         Ad adToCreate = adMapper.adDtoToAd(adDto);
-        adToCreate.setActivity(activity);
-        activity.getAds().add(adToCreate);
-        Ad createdAd = adService.createAd(adToCreate);
-
-        AdImage savedAdImage = adImageService.saveImage(createdAd, imageFile);
+        Ad createdAd = adService.createAd(adToCreate, activityId, imageFile.getBytes());
 
         return adMapper.adToAdDto(createdAd);
     }

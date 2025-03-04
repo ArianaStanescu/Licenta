@@ -195,4 +195,9 @@ public class Ad {
     public void setEnrollmentRequests(Set<EnrollmentRequest> enrollmentRequests) {
         this.enrollmentRequests = enrollmentRequests;
     }
+
+    public void addAdImage(AdImage image) {
+        this.image = image;
+        image.setAd(this);
+    }
 }

@@ -1,12 +1,10 @@
 package com.app.licenta.services;
 
-import com.app.licenta.entities.ActivityCategory;
-import com.app.licenta.entities.Ad;
-import com.app.licenta.entities.Gender;
+import com.app.licenta.entities.*;
+import com.app.licenta.repositories.ActivityRepository;
 import com.app.licenta.repositories.AdRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +20,19 @@ public class AdService {
     @Autowired
     private AdRepository adRepository;
 
-    public Ad createAd(Ad ad) {
+    @Autowired
+    private ActivityRepository activityRepository;
+
+    public Ad createAd(Ad ad, Integer activityId, byte[] imageData) {
+        Activity activity = activityRepository.findById(activityId)
+                .orElseThrow(() -> new EntityNotFoundException("Activity with id " + activityId + " not found"));
+
+        AdImage adImage = new AdImage();
+        adImage.setImageData(imageData);
+
+        ad.addAdImage(adImage);
+        activity.addAd(ad);
+
         return adRepository.save(ad);
     }
 
@@ -30,10 +40,6 @@ public class AdService {
         return adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ad with id " + id + " not found"));
     }
-
-//    public List<Activity> findAll() {
-//        return activityRepository.findAll();
-//    }
 
     public List<Ad> searchAds(String title,
                               ActivityCategory category,
@@ -64,25 +70,26 @@ public class AdService {
     }
 
     public Ad update(Integer id, Ad ad) {
-        if (adRepository.existsById(id)) {
-            Ad adToUpdate = adRepository.getById(id);
-            adToUpdate.setTitle(ad.getTitle());
-            adToUpdate.setDescription(ad.getDescription());
-            adToUpdate.setPrice(ad.getPrice());
-            adToUpdate.setCategory(ad.getCategory());
-            adToUpdate.setMinAge(ad.getMinAge());
-            adToUpdate.setMaxAge(ad.getMaxAge());
-            adToUpdate.setGender(ad.getGender());
-            adToUpdate.setStartDate(ad.getStartDate());
-            adToUpdate.setEndDate(ad.getEndDate());
-            adToUpdate.setStatus(ad.getStatus());
-            adToUpdate.setTotalSpots(ad.getTotalSpots());
-
-            adRepository.save(adToUpdate);
-            return adToUpdate;
-        } else {
+        if (!adRepository.existsById(id)) {
             throw new EntityNotFoundException("Ad with id " + id + " not found");
         }
+        Ad adToUpdate = adRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ad with id " + id + " not found"));
+        adToUpdate.setTitle(ad.getTitle());
+        adToUpdate.setDescription(ad.getDescription());
+        adToUpdate.setPrice(ad.getPrice());
+        adToUpdate.setCategory(ad.getCategory());
+        adToUpdate.setMinAge(ad.getMinAge());
+        adToUpdate.setMaxAge(ad.getMaxAge());
+        adToUpdate.setGender(ad.getGender());
+        adToUpdate.setStartDate(ad.getStartDate());
+        adToUpdate.setEndDate(ad.getEndDate());
+        adToUpdate.setStatus(ad.getStatus());
+        adToUpdate.setTotalSpots(ad.getTotalSpots());
+
+        adRepository.save(adToUpdate);
+        return adToUpdate;
+
     }
 
     public void deleteById(Integer id) {
