@@ -70,9 +70,6 @@ public class AdService {
     }
 
     public Ad update(Integer id, Ad ad) {
-        if (!adRepository.existsById(id)) {
-            throw new EntityNotFoundException("Ad with id " + id + " not found");
-        }
         Ad adToUpdate = adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Ad with id " + id + " not found"));
         adToUpdate.setTitle(ad.getTitle());

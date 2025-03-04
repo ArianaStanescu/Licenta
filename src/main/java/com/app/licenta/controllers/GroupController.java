@@ -52,7 +52,6 @@ public class GroupController {
     @PostMapping("/create/{activityId}")
     public GroupDto create(@PathVariable Integer activityId, @RequestBody GroupDto groupDto) {
         Activity activity = activityService.getById(activityId);
-        groupDto.setActivity(activityMapper.activityToActivityDto(activity));
         Group groupToCreate = groupMapper.groupDtoToGroup(groupDto);
         groupToCreate.setActivity(activity);
         activity.getGroups().add(groupToCreate);

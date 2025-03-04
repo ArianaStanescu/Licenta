@@ -33,18 +33,15 @@ public class ActivityService {
     }
 
     public Activity update(Integer id, Activity activity) {
-        if (activityRepository.existsById(id)) {
-            Activity activityToUpdate = activityRepository.getById(id);
-            activityToUpdate.setTitle(activity.getTitle());
-            activityToUpdate.setDescription(activity.getDescription());
-            activityToUpdate.setCategory(activity.getCategory());
-            activityToUpdate.setGender(activity.getGender());
+        Activity activityToUpdate = activityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Activity with id " + id + " not found"));
+        activityToUpdate.setTitle(activity.getTitle());
+        activityToUpdate.setDescription(activity.getDescription());
+        activityToUpdate.setCategory(activity.getCategory());
+        activityToUpdate.setGender(activity.getGender());
 
-            activityRepository.save(activityToUpdate);
-            return activityToUpdate;
-        } else {
-            throw new EntityNotFoundException("Activity with id " + id + " not found");
-        }
+        activityRepository.save(activityToUpdate);
+        return activityToUpdate;
     }
 
     public void deleteById(Integer id) {

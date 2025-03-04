@@ -22,19 +22,14 @@ public class SessionCommentController {
 
     @Autowired
     private SessionCommentService sessionCommentService;
-
     @Autowired
     private SessionCommentMapper sessionCommentMapper;
-
     @Autowired
     private SessionService sessionService;
-
     @Autowired
     private SessionMapper sessionMapper;
-
     @Autowired
     private TrainerService trainerService;
-
     @Autowired
     private TrainerMapper trainerMapper;
     @Autowired
