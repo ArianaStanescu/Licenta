@@ -73,6 +73,9 @@ public class Ad {
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
 
+    @OneToOne(mappedBy = "ad", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private AdImage image;
+
     public Integer getId() {
         return id;
     }

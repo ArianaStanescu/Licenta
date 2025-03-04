@@ -2,22 +2,19 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.AdDto;
 import com.app.licenta.dtos.AdUpdateDto;
-import com.app.licenta.entities.Activity;
-import com.app.licenta.entities.ActivityCategory;
-import com.app.licenta.entities.Ad;
-import com.app.licenta.entities.Gender;
+import com.app.licenta.entities.*;
 import com.app.licenta.mappers.ActivityMapper;
 import com.app.licenta.mappers.AdMapper;
 import com.app.licenta.services.ActivityService;
+import com.app.licenta.services.AdImageService;
 import com.app.licenta.services.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.data.domain.Pageable;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +33,9 @@ public class AdController {
 
     @Autowired
     private ActivityService activityService;
+
+    @Autowired
+    private AdImageService adImageService;
 
     @GetMapping("/{id}")
     public AdDto get(@PathVariable Integer id) {
@@ -67,14 +67,18 @@ public class AdController {
                 .toList();
     }
 
+    //    @PostMapping(value = "/create/{activityId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_OCTET_STREAM_VALUE},
+//            produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping("/create/{activityId}")
-    public AdDto create(@PathVariable Integer activityId, @RequestBody AdDto adDto) {
+    public AdDto create(@PathVariable Integer activityId, @RequestPart("ad") AdDto adDto, @RequestPart("image") MultipartFile imageFile) throws IOException {
         Activity activity = activityService.getById(activityId);
         adDto.setActivity(activityMapper.activityToActivityDto(activity));
         Ad adToCreate = adMapper.adDtoToAd(adDto);
         adToCreate.setActivity(activity);
         activity.getAds().add(adToCreate);
         Ad createdAd = adService.createAd(adToCreate);
+
+        AdImage savedAdImage = adImageService.saveImage(createdAd, imageFile);
 
         return adMapper.adToAdDto(createdAd);
     }
