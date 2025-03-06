@@ -26,6 +26,9 @@ public class Session {
     @OneToMany(mappedBy = "session", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<SessionComment> comments = new HashSet<>();
 
+    @OneToMany(mappedBy = "session", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<SessionDocument> documents = new HashSet<>();
+
     public Integer getId() {
         return id;
     }
@@ -64,5 +67,13 @@ public class Session {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public Set<SessionDocument> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(Set<SessionDocument> documents) {
+        this.documents = documents;
     }
 }

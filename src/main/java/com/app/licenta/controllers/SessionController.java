@@ -29,17 +29,6 @@ public class SessionController {
     @Autowired
     private GroupMapper groupMapper;
 
-    @GetMapping("/{id}")
-    public SessionGetDto get(@PathVariable Integer id) {
-        Session session = sessionService.getById(id);
-        return sessionMapper.sessionToSessionGetDto(session);
-    }
-
-    @GetMapping("/list/{groupId}")
-    public Set<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId) {
-        return sessionMapper.sessionListToSessionDtoList(sessionService.findAllByGroupId(groupId));
-    }
-
     @PostMapping("/create/{groupId}")
     public SessionDto create(@PathVariable Integer groupId, @RequestBody SessionDto sessionDto) {
         Group group = groupService.getById(groupId);
@@ -50,6 +39,17 @@ public class SessionController {
         Session createdSession = sessionService.createSession(sessionToCreate);
 
         return sessionMapper.sessionToSessionDto(createdSession);
+    }
+
+    @GetMapping("/{id}")
+    public SessionGetDto get(@PathVariable Integer id) {
+        Session session = sessionService.getById(id);
+        return sessionMapper.sessionToSessionGetDto(session);
+    }
+
+    @GetMapping("/list/{groupId}")
+    public Set<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId) {
+        return sessionMapper.sessionListToSessionDtoList(sessionService.findAllByGroupId(groupId));
     }
 
     @DeleteMapping("/{id}")

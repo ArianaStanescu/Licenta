@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/ad-images")
 public class AdImageController {
@@ -23,16 +21,12 @@ public class AdImageController {
 
     @GetMapping("/{adId}")
     public ResponseEntity<byte[]> getImageByAdId(@PathVariable Integer adId) {
-        Optional<AdImage> adImage = adImageService.findByAdId(adId);
+        AdImage adImage = adImageService.getByAdId(adId);
 
-        if (adImage.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-
-        byte[] imageData = adImage.get().getImageData();
+        byte[] imageData = adImage.getImageData();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.IMAGE_JPEG); // Change to IMAGE_PNG if necessary
+        headers.setContentType(MediaType.IMAGE_JPEG);
 
         return new ResponseEntity<>(imageData, headers, HttpStatus.OK);
     }
