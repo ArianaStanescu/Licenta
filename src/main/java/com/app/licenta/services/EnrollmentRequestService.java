@@ -32,14 +32,11 @@ public class EnrollmentRequestService {
         return enrollmentRequestRepository.findAllByChildId(childId);
     }
 
-    public EnrollmentRequest update (Integer id, EnrollmentRequest enrollmentRequest) {
-        if (enrollmentRequestRepository.existsById(id)) {
-            EnrollmentRequest enrollmentRequestToUpdate = enrollmentRequestRepository.getById(id);
-            enrollmentRequestToUpdate.setStatus(enrollmentRequest.getStatus());
-            enrollmentRequestRepository.save(enrollmentRequestToUpdate);
-            return enrollmentRequestToUpdate;
-        } else {
-            throw new EntityNotFoundException("Enrollment request with id " + id + " not found");
-        }
+    public EnrollmentRequest update(Integer id, EnrollmentRequest enrollmentRequest) {
+        EnrollmentRequest enrollmentRequestToUpdate = enrollmentRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Enrollment request with id " + id + " not found"));
+        enrollmentRequestToUpdate.setStatus(enrollmentRequest.getStatus());
+        enrollmentRequestRepository.save(enrollmentRequestToUpdate);
+        return enrollmentRequestToUpdate;
     }
 }

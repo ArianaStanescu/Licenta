@@ -34,4 +34,9 @@ public class SessionDocumentController {
         headers.setContentType(MediaType.APPLICATION_PDF);
         return new ResponseEntity<>(documentData, headers, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Integer id) {
+        sessionDocumentService.deleteById(id);
+    }
 }

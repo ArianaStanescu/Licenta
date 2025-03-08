@@ -29,18 +29,16 @@ public class ChildService {
     }
 
     public Child update(Integer id, Child child) {
-        if (childRepository.existsById(id)) {
-            Child childToUpdate = childRepository.getById(id);
-            childToUpdate.setFirstName(child.getFirstName());
-            childToUpdate.setLastName(child.getLastName());
-            childToUpdate.setGender(child.getGender());
-            childToUpdate.setBirthDate(child.getBirthDate());
+        Child childToUpdate = childRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Child with id " + id + " not found"));
+        childToUpdate.setFirstName(child.getFirstName());
+        childToUpdate.setLastName(child.getLastName());
+        childToUpdate.setGender(child.getGender());
+        childToUpdate.setBirthDate(child.getBirthDate());
 
-            childRepository.save(childToUpdate);
-            return childToUpdate;
-        } else {
-            throw new EntityNotFoundException("Child with id " + id + " not found");
-        }
+        childRepository.save(childToUpdate);
+        return childToUpdate;
+
     }
 
     public void deleteById(Integer id) {

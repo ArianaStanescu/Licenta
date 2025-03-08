@@ -28,15 +28,6 @@ public class AdController {
     @Autowired
     private AdMapper adMapper;
 
-    @Autowired
-    private ActivityMapper activityMapper;
-
-    @Autowired
-    private ActivityService activityService;
-
-    @Autowired
-    private AdImageService adImageService;
-
     @GetMapping("/{id}")
     public AdDto get(@PathVariable Integer id) {
         Ad ad = adService.getById(id);

@@ -27,4 +27,8 @@ public class AdImageService {
         return adImageRepository.findByAdId(adId)
                 .orElseThrow(() -> new EntityNotFoundException("Image not found"));
     }
+
+    public void deleteByAdId(Integer adId) {
+        adImageRepository.deleteByAdId(adId);
+    }
 }

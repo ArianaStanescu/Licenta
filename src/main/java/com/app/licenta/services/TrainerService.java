@@ -1,5 +1,6 @@
 package com.app.licenta.services;
 
+import com.app.licenta.entities.Parent;
 import com.app.licenta.entities.Trainer;
 import com.app.licenta.repositories.TrainerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,21 +34,18 @@ public class TrainerService {
     }
 
     public Trainer update(Integer id, Trainer trainer) {
-        if (trainerRepository.existsById(id)) {
-            Trainer trainerToUpdate = trainerRepository.getById(id);
-            trainerToUpdate.setFirstName(trainer.getFirstName());
-            trainerToUpdate.setLastName(trainer.getLastName());
-            trainerToUpdate.setGender(trainer.getGender());
-            trainerToUpdate.setBirthDate(trainer.getBirthDate());
-            trainerToUpdate.setPhoneNumber(trainer.getPhoneNumber());
-            trainerToUpdate.setEmail(trainer.getEmail());
-            trainerToUpdate.setActivities(trainer.getActivities());
+        Trainer trainerToUpdate = trainerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + id + " not found"));
+        trainerToUpdate.setFirstName(trainer.getFirstName());
+        trainerToUpdate.setLastName(trainer.getLastName());
+        trainerToUpdate.setGender(trainer.getGender());
+        trainerToUpdate.setBirthDate(trainer.getBirthDate());
+        trainerToUpdate.setPhoneNumber(trainer.getPhoneNumber());
+        trainerToUpdate.setEmail(trainer.getEmail());
+        trainerToUpdate.setActivities(trainer.getActivities());
 
-            trainerRepository.save(trainerToUpdate);
-            return trainerToUpdate;
-        } else {
-            throw new EntityNotFoundException("Trainer with id " + id + " not found");
-        }
+        trainerRepository.save(trainerToUpdate);
+        return trainerToUpdate;
     }
 
     public void deleteById(Integer id) {

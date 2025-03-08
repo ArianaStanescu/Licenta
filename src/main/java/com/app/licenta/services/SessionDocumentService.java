@@ -32,4 +32,8 @@ public class SessionDocumentService {
         return sessionDocumentRepository.findBySessionId(sessionId)
                 .orElseThrow(() -> new EntityNotFoundException("Document not found"));
     }
+
+    public void deleteById(Integer sessionId) {
+        sessionDocumentRepository.deleteById(sessionId);
+    }
 }
