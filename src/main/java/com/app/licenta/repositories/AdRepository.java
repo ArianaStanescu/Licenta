@@ -33,4 +33,26 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
             Double minPrice,
             Double maxPrice,
             Pageable pageable);
+
+    @Query("SELECT a FROM ad a JOIN a.activity act JOIN act.trainer t WHERE t.id = :trainerId " +
+            "AND (:title IS NULL OR LOWER(a.title) LIKE :title) " +
+            "AND (:category IS NULL OR a.category = :category) " +
+            "AND (:minAge IS NULL OR a.minAge >= :minAge) " +
+            "AND (:maxAge IS NULL OR a.maxAge <= :maxAge) " +
+            "AND (:gender IS NULL OR a.gender = :gender) " +
+            "AND (:minPrice IS NULL OR a.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR a.price <= :maxPrice)")
+    Page<Ad> searchAdsByTrainerId(
+            Integer trainerId,
+            String title,
+            ActivityCategory category,
+            Integer minAge,
+            Integer maxAge,
+            Gender gender,
+            Double minPrice,
+            Double maxPrice,
+            Pageable pageable);
+
+    @Query("SELECT a FROM ad a JOIN a.activity act JOIN act.trainer t WHERE t.id = :trainerId")
+    Set<Ad> findAllByTrainerId(@Param("trainerId") Integer trainerId);
 }

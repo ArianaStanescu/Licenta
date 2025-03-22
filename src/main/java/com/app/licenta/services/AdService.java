@@ -65,8 +65,41 @@ public class AdService {
         return adRepository.searchAds(lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, pageable).getContent();
     }
 
+    public List<Ad> searchAdsByTrainerId(
+            Integer trainerId,
+            String title,
+            ActivityCategory category,
+            Integer minAge,
+            Integer maxAge,
+            Gender gender,
+            Double minPrice,
+            Double maxPrice,
+            int pageNumber,
+            int pageSize,
+            String sortBy,
+            String sortDirection) {
+
+        String lowerCaseTitle = Optional.ofNullable(title)
+                .map(t -> "%" + t.toLowerCase() + "%")
+                .orElse(null);
+        Sort.Direction direction = Optional.ofNullable(sortDirection)
+                .map(Sort.Direction::fromString)
+                .orElse(Sort.Direction.DESC);
+        Sort sort = Optional.ofNullable(sortBy)
+                .map(s -> Sort.by(direction, s))
+                .orElse(Sort.by(direction, "id"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        return adRepository.searchAdsByTrainerId(trainerId, lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, pageable).getContent();
+    }
+
+
     public Set<Ad> findAllByActivityId(Integer activityId) {
         return adRepository.findAllByActivityId(activityId);
+    }
+
+    public Set<Ad> findAllByTrainerId(Integer trainerId) {
+        return adRepository.findAllByTrainerId(trainerId);
     }
 
     public Ad update(Integer id, Ad ad) {

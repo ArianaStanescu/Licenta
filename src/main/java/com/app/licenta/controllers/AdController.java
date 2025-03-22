@@ -39,6 +39,11 @@ public class AdController {
         return adMapper.adListToAdDtoList(adService.findAllByActivityId(activityId));
     }
 
+    @GetMapping("/list-by-trainer/{trainerId}")
+    public Set<AdDto> findAllByTrainerId(@PathVariable Integer trainerId) {
+        return adMapper.adListToAdDtoList(adService.findAllByTrainerId(trainerId));
+    }
+
     @GetMapping("/search")
     public List<AdDto> searchAds(
             @RequestParam(required = false) String title,
@@ -53,6 +58,27 @@ public class AdController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDirection) {
         return adService.searchAds(title, category, minAge, maxAge, gender, minPrice, maxPrice, pageNumber, pageSize, sortBy, sortDirection)
+                .stream()
+                .map(adMapper::adToAdDto)
+                .toList();
+    }
+
+    @GetMapping("/search-by-trainer/{trainerId}")
+    public List<AdDto> searchAdsByTrainerId(
+            @PathVariable Integer trainerId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) ActivityCategory category,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(required = false) Gender gender,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam() int pageNumber,
+            @RequestParam() int pageSize,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+
+        return adService.searchAdsByTrainerId(trainerId, title, category, minAge, maxAge, gender, minPrice, maxPrice, pageNumber, pageSize, sortBy, sortDirection)
                 .stream()
                 .map(adMapper::adToAdDto)
                 .toList();
