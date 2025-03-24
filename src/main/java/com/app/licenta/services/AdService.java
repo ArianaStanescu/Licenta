@@ -48,6 +48,7 @@ public class AdService {
                               Gender gender,
                               Double minPrice,
                               Double maxPrice,
+                              AdStatus status,
                               int pageNumber,
                               int pageSize,
                               String sortBy,
@@ -62,7 +63,7 @@ public class AdService {
                 .map(s -> Sort.by(direction, s))
                 .orElse(Sort.by(direction, "id"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        return adRepository.searchAds(lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, pageable).getContent();
+        return adRepository.searchAds(lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageable).getContent();
     }
 
     public List<Ad> searchAdsByTrainerId(
@@ -74,6 +75,7 @@ public class AdService {
             Gender gender,
             Double minPrice,
             Double maxPrice,
+            AdStatus status,
             int pageNumber,
             int pageSize,
             String sortBy,
@@ -90,7 +92,7 @@ public class AdService {
                 .orElse(Sort.by(direction, "id"));
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        return adRepository.searchAdsByTrainerId(trainerId, lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, pageable).getContent();
+        return adRepository.searchAdsByTrainerId(trainerId, lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageable).getContent();
     }
 
 

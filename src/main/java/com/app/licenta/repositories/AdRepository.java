@@ -2,6 +2,7 @@ package com.app.licenta.repositories;
 
 import com.app.licenta.entities.ActivityCategory;
 import com.app.licenta.entities.Ad;
+import com.app.licenta.entities.AdStatus;
 import com.app.licenta.entities.Gender;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
             "(:maxAge IS NULL OR a.maxAge <= :maxAge) AND " +
             "(:gender IS NULL OR a.gender = :gender) AND " +
             "(:minPrice IS NULL OR a.price >= :minPrice) AND " +
+            "(:status IS NULL OR a.status = :status) AND " +
             "(:maxPrice IS NULL OR a.price <= :maxPrice)")
     Page<Ad> searchAds(
             String title,
@@ -32,6 +34,7 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
             Gender gender,
             Double minPrice,
             Double maxPrice,
+            AdStatus status,
             Pageable pageable);
 
     @Query("SELECT a FROM ad a JOIN a.activity act JOIN act.trainer t WHERE t.id = :trainerId " +
@@ -41,6 +44,7 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
             "AND (:maxAge IS NULL OR a.maxAge <= :maxAge) " +
             "AND (:gender IS NULL OR a.gender = :gender) " +
             "AND (:minPrice IS NULL OR a.price >= :minPrice) " +
+            "AND (:status IS NULL OR a.status = :status) " +
             "AND (:maxPrice IS NULL OR a.price <= :maxPrice)")
     Page<Ad> searchAdsByTrainerId(
             Integer trainerId,
@@ -51,6 +55,7 @@ public interface AdRepository extends JpaRepository<Ad, Integer> {
             Gender gender,
             Double minPrice,
             Double maxPrice,
+            AdStatus status,
             Pageable pageable);
 
     @Query("SELECT a FROM ad a JOIN a.activity act JOIN act.trainer t WHERE t.id = :trainerId")

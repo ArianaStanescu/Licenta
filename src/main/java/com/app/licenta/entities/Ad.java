@@ -200,4 +200,5 @@ public class Ad {
         this.image = image;
         image.setAd(this);
     }
+
 }

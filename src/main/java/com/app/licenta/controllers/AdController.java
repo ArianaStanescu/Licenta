@@ -53,11 +53,12 @@ public class AdController {
             @RequestParam(required = false) Gender gender,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) AdStatus status,
             @RequestParam() int pageNumber,
             @RequestParam() int pageSize,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDirection) {
-        return adService.searchAds(title, category, minAge, maxAge, gender, minPrice, maxPrice, pageNumber, pageSize, sortBy, sortDirection)
+        return adService.searchAds(title, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageNumber, pageSize, sortBy, sortDirection)
                 .stream()
                 .map(adMapper::adToAdDto)
                 .toList();
@@ -73,12 +74,13 @@ public class AdController {
             @RequestParam(required = false) Gender gender,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) AdStatus status,
             @RequestParam() int pageNumber,
             @RequestParam() int pageSize,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDirection) {
 
-        return adService.searchAdsByTrainerId(trainerId, title, category, minAge, maxAge, gender, minPrice, maxPrice, pageNumber, pageSize, sortBy, sortDirection)
+        return adService.searchAdsByTrainerId(trainerId, title, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageNumber, pageSize, sortBy, sortDirection)
                 .stream()
                 .map(adMapper::adToAdDto)
                 .toList();
