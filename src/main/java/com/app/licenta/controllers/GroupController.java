@@ -20,16 +20,8 @@ import java.util.Set;
 public class GroupController {
     @Autowired
     private GroupService groupService;
-
     @Autowired
     private GroupMapper groupMapper;
-
-    @Autowired
-    private ActivityMapper activityMapper;
-
-    @Autowired
-    private ActivityService activityService;
-
     @Autowired
     private ChildService childService;
 
@@ -49,13 +41,9 @@ public class GroupController {
         return groupMapper.groupListToGroupDtoList(groupService.findAllByChildId(childId));
     }
 
-    @PostMapping("/create/{activityId}")
-    public GroupDto create(@PathVariable Integer activityId, @RequestBody GroupDto groupDto) {
-        Activity activity = activityService.getById(activityId);
-        Group groupToCreate = groupMapper.groupDtoToGroup(groupDto);
-        groupToCreate.setActivity(activity);
-        activity.getGroups().add(groupToCreate);
-        Group createdGroup = groupService.createGroup(groupToCreate);
+    @PostMapping("/create/{activityId}/{adId}")
+    public GroupDto create(@PathVariable Integer activityId, @PathVariable Integer adId) {
+        Group createdGroup = groupService.createGroup(activityId, adId);
 
         return groupMapper.groupToGroupDto(createdGroup);
     }
