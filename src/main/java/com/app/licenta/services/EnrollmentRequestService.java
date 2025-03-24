@@ -1,7 +1,7 @@
 package com.app.licenta.services;
 
 
-import com.app.licenta.entities.EnrollmentRequest;
+import com.app.licenta.entities.*;
 import com.app.licenta.repositories.EnrollmentRequestRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,40 @@ public class EnrollmentRequestService {
 
     @Autowired
     private EnrollmentRequestRepository enrollmentRequestRepository;
+    @Autowired
+    private AdService adService;
+    @Autowired
+    private ChildService childService;
 
-    public EnrollmentRequest createEnrollmentRequest(EnrollmentRequest enrollmentRequest) {
+    public EnrollmentRequest createEnrollmentRequest(Integer adId, Integer childId) {
+
+        Ad ad = adService.getById(adId);
+        Child child = childService.getById(childId);
+
+        boolean alreadyRequested = ad.getEnrollmentRequests().stream()
+                .anyMatch(er -> er.getChild().getId().equals(childId));
+
+        if (alreadyRequested) {
+            throw new IllegalStateException("Copilul este deja înscris la acest anunț.");
+        }
+
+        if(ad.getEnrollmentRequests().size() > ad.getTotalSpots()) {
+            throw new IllegalStateException("Nu mai există locuri disponibile.");
+        }
+
+        EnrollmentRequest enrollmentRequest = new EnrollmentRequest();
+        enrollmentRequest.setAd(ad);
+        enrollmentRequest.setChild(child);
+        enrollmentRequest.setStatus(EnrollmentStatus.PENDING);
+
+        ad.getEnrollmentRequests().add(enrollmentRequest);
+        child.getEnrollmentRequests().add(enrollmentRequest);
+
+        if(ad.getEnrollmentRequests().size() == ad.getTotalSpots()) {
+            ad.setStatus(AdStatus.PENDING);
+            adService.update(ad.getId(), ad);
+        }
+
         return enrollmentRequestRepository.save(enrollmentRequest);
     }
 
