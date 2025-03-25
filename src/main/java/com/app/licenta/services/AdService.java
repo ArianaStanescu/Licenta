@@ -29,8 +29,12 @@ public class AdService {
 
         AdImage adImage = new AdImage();
         adImage.setImageData(imageData);
-
         ad.addAdImage(adImage);
+        ad.setTitle(activity.getTitle());
+        ad.setCategory(activity.getCategory());
+        ad.setDescription(activity.getDescription());
+        ad.setGender(activity.getGender());
+        ad.setStatus(AdStatus.ACTIVE);
         activity.addAd(ad);
 
         return adRepository.save(ad);
