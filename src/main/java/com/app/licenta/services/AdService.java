@@ -66,8 +66,9 @@ public class AdService {
         Sort sort = Optional.ofNullable(sortBy)
                 .map(s -> Sort.by(direction, s))
                 .orElse(Sort.by(direction, "id"));
+        AdStatus effectiveStatus = Optional.ofNullable(status).orElse(AdStatus.ACTIVE);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        return adRepository.searchAds(lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageable).getContent();
+        return adRepository.searchAds(lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, effectiveStatus, pageable).getContent();
     }
 
     public List<Ad> searchAdsByTrainerId(
@@ -94,9 +95,10 @@ public class AdService {
         Sort sort = Optional.ofNullable(sortBy)
                 .map(s -> Sort.by(direction, s))
                 .orElse(Sort.by(direction, "id"));
+        AdStatus effectiveStatus = Optional.ofNullable(status).orElse(AdStatus.ACTIVE);
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-        return adRepository.searchAdsByTrainerId(trainerId, lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageable).getContent();
+        return adRepository.searchAdsByTrainerId(trainerId, lowerCaseTitle, category, minAge, maxAge, gender, minPrice, maxPrice, effectiveStatus, pageable).getContent();
     }
 
 

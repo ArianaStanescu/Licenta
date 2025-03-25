@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -30,14 +31,18 @@ public class GroupService {
         group.setStatus(ChildrenGroupStatus.ACTIVE);
         group.setActivity(activity);
         group.setActivityDays(ad.getActivityDays());
-        long approvedCount = ad.getEnrollmentRequests().stream()
+
+        List<EnrollmentRequest> approvedRequests = ad.getEnrollmentRequests().stream()
                 .filter(er -> er.getStatus() == EnrollmentStatus.APPROVED)
-                .count();
-        if (approvedCount == ad.getTotalSpots()) {
-            group.setChildrenCount(ad.getTotalSpots());
-        } else {
-            group.setChildrenCount((int) approvedCount);
+                .toList();
+        for (EnrollmentRequest er : approvedRequests) {
+            Child child = er.getChild();
+            group.getChildren().add(child);
+            child.getGroups().add(group);
         }
+        group.setChildrenCount(approvedRequests.size());
+        ad.setStatus(AdStatus.COMPLETED);
+
         activity.getGroups().add(group);
 
         return groupRepository.save(group);
