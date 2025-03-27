@@ -2,13 +2,8 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.GroupDto;
 import com.app.licenta.dtos.GroupGetDto;
-import com.app.licenta.entities.Activity;
-import com.app.licenta.entities.Child;
 import com.app.licenta.entities.Group;
-import com.app.licenta.mappers.ActivityMapper;
 import com.app.licenta.mappers.GroupMapper;
-import com.app.licenta.services.ActivityService;
-import com.app.licenta.services.ChildService;
 import com.app.licenta.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +17,6 @@ public class GroupController {
     private GroupService groupService;
     @Autowired
     private GroupMapper groupMapper;
-    @Autowired
-    private ChildService childService;
 
     @GetMapping("/{id}")
     public GroupGetDto get(@PathVariable Integer id) {
@@ -34,6 +27,11 @@ public class GroupController {
     @GetMapping("/list-by-activity/{activityId}")
     public Set<GroupDto> findAllByActivityId(@PathVariable Integer activityId) {
         return groupMapper.groupListToGroupDtoList(groupService.findAllByActivityId(activityId));
+    }
+
+    @GetMapping("/list-by-trainer/{trainerId}")
+    public Set<GroupDto> findAllByTrainerId(@PathVariable Integer trainerId) {
+        return groupMapper.groupListToGroupDtoList(groupService.findAllByTrainerId(trainerId));
     }
 
     @GetMapping("/list-by-child/{childId}")
@@ -48,26 +46,24 @@ public class GroupController {
         return groupMapper.groupToGroupDto(createdGroup);
     }
 
-    //update
+//    @PutMapping("/update/{groupId}")
+//    public GroupDto update(@PathVariable Integer groupId, @RequestBody GroupDto groupDto) {
+//        Group group = groupMapper.groupDtoToGroup(groupDto);
+//        Group updatedGroup = groupService.update(groupId, groupDto);
+//        return groupMapper.groupToGroupDto(updatedGroup);
+//    }
+
 
     @PutMapping("/add-child/{groupId}/{childId}")
     public GroupDto addChildToGroup(@PathVariable Integer groupId, @PathVariable Integer childId) {
-        Group group = groupService.getById(groupId);
-        Child child = childService.getById(childId);
-        group.getChildren().add(child);
-        Group updatedGroup = groupService.update(group);
-        return groupMapper.groupToGroupDto(updatedGroup);
+        return groupMapper.groupToGroupDto(groupService.addChild(groupId, childId));
     }
 
     @PutMapping("/remove-child/{groupId}/{childId}")
-    public GroupDto removeChildToGroup(@PathVariable Integer groupId, @PathVariable Integer childId) {
-        Group group = groupService.getById(groupId);
-        Child child = childService.getById(childId);
-        group.getChildren().remove(child);
-        Group updatedGroup = groupService.update(group);
+    public GroupDto removeChildFromGroup(@PathVariable Integer groupId, @PathVariable Integer childId) {
+        Group updatedGroup = groupService.removeChild(groupId, childId);
         return groupMapper.groupToGroupDto(updatedGroup);
     }
-
 
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {

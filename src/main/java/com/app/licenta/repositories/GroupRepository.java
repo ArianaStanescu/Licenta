@@ -12,6 +12,9 @@ import java.util.Set;
 public interface GroupRepository extends JpaRepository<Group, Integer> {
     Set<Group> findAllByActivityId(Integer activityId);
 
+    @Query("SELECT g FROM group g WHERE g.activity.trainer.id = :trainerId")
+    Set<Group> findAllByTrainerId(@Param("trainerId") Integer trainerId);
+
     @Query("SELECT g FROM group g JOIN g.children c WHERE c.id = :childId")
     Set<Group> findAllByChildId(@Param("childId") Integer childId);
 }

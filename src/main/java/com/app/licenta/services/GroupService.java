@@ -17,6 +17,8 @@ public class GroupService {
     private ActivityService activityService;
     @Autowired
     private AdService adService;
+    @Autowired
+    private ChildService childService;
 
     public Group createGroup(Integer activityId, Integer adId) {
         Activity activity = activityService.getById(activityId);
@@ -61,6 +63,10 @@ public class GroupService {
         return groupRepository.findAllByActivityId(activityId);
     }
 
+    public Set<Group> findAllByTrainerId(Integer trainerId) {
+        return groupRepository.findAllByTrainerId(trainerId);
+    }
+
     public Set<Group> findAllByChildId(Integer childId) {
         return groupRepository.findAllByChildId(childId);
     }
@@ -71,6 +77,20 @@ public class GroupService {
         if (!groupRepository.existsById(group.getId())) {
             throw new EntityNotFoundException("Group with id " + group.getId() + " not found");
         }
+        return groupRepository.save(group);
+    }
+
+    public Group addChild(Integer groupId, Integer childId) {
+        Group group = getById(groupId);
+        Child child = childService.getById(childId);
+        group.getChildren().add(child);
+        return groupRepository.save(group);
+    }
+
+    public Group removeChild(Integer groupId, Integer childId) {
+        Group group = getById(groupId);
+        Child child = childService.getById(childId);
+        group.getChildren().remove(child);
         return groupRepository.save(group);
     }
 
