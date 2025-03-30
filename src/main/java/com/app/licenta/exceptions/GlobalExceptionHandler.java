@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.CONFLICT;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -16,5 +17,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDetail error = new ErrorDetail(entityNotFoundException.getMessage());
         return new ResponseEntity<>(error, NOT_FOUND);
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<?> handleIllegalStateException(IllegalStateException ex) {
+        ErrorDetail error = new ErrorDetail(ex.getMessage());
+        return new ResponseEntity<>(error, CONFLICT); // 409
+    }
+
 
 }

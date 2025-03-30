@@ -28,11 +28,6 @@ public class TrainerController {
         return trainerMapper.trainerToTrainerDto(trainerService.getByEmail(email));
     }
 
-//    @GetMapping("/list")
-//    public List<TrainerDto> findAll() {
-//        return trainerMapper.parentListToParentDtoList(trainerService.findAll());
-//    }
-
     @PostMapping("/register")
     public TrainerDto create(@RequestBody TrainerDto trainerDto) {
         Trainer trainerToCreate = trainerMapper.trainerDtoToTrainer(trainerDto);

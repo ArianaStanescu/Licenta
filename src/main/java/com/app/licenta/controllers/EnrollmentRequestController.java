@@ -19,16 +19,14 @@ import java.util.Set;
 public class EnrollmentRequestController {
     @Autowired
     private EnrollmentRequestService enrollmentRequestService;
-
     @Autowired
     private EnrollmentRequestMapper enrollmentRequestMapper;
 
-    @Autowired
-    private AdService adService;
-
-    @Autowired
-    private ChildService childService;
-
+    @PostMapping("/create/{adId}/{childId}")
+    public EnrollmentRequestDto create(@PathVariable Integer adId, @PathVariable Integer childId) {
+        EnrollmentRequest enrollmentRequest = enrollmentRequestService.createEnrollmentRequest(adId, childId);
+        return enrollmentRequestMapper.enrollmentRequestToEnrollmentRequestDto(enrollmentRequest);
+    }
 
     @GetMapping("/{id}")
     public EnrollmentRequestDto get(@PathVariable Integer id) {
@@ -60,21 +58,6 @@ public class EnrollmentRequestController {
 //
 //        return enrollmentRequestMapper.enrollmentRequestToEnrollmentRequestCreateDto(createdEnrollmentRequest);
 //    }
-
-    @PostMapping("/create/{adId}/{childId}")
-    public EnrollmentRequestDto create(@PathVariable Integer adId, @PathVariable Integer childId) {
-        Ad ad = adService.getById(adId);
-        Child child = childService.getById(childId);
-        EnrollmentRequest enrollmentRequestToCreate = new EnrollmentRequest();
-        enrollmentRequestToCreate.setAd(ad);
-        enrollmentRequestToCreate.setChild(child);
-        enrollmentRequestToCreate.setStatus(EnrollmentStatus.PENDING);
-        ad.getEnrollmentRequests().add(enrollmentRequestToCreate);
-        child.getEnrollmentRequests().add(enrollmentRequestToCreate);
-        EnrollmentRequest createdEnrollmentRequest = enrollmentRequestService.createEnrollmentRequest(enrollmentRequestToCreate);
-
-        return enrollmentRequestMapper.enrollmentRequestToEnrollmentRequestDto(createdEnrollmentRequest);
-    }
 
     @PutMapping("/{id}")
     public EnrollmentRequestUpdateDto update(@RequestBody EnrollmentRequestUpdateDto enrollmentRequestUpdateDto, @PathVariable Integer id) {

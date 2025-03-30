@@ -1,5 +1,6 @@
 package com.app.licenta.services;
 
+
 import com.app.licenta.entities.Parent;
 import com.app.licenta.repositories.ParentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,18 +34,15 @@ public class ParentService {
     }
 
     public Parent update(Integer id, Parent parent) {
-        if (parentRepository.existsById(id)) {
-            Parent parentToUpdate = parentRepository.getById(id);
-            parentToUpdate.setFirstName(parent.getFirstName());
-            parentToUpdate.setLastName(parent.getLastName());
-            parentToUpdate.setEmail(parent.getEmail());
-            parentToUpdate.setPhoneNumber(parent.getPhoneNumber());
+        Parent parentToUpdate = parentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Parent with id " + id + " not found"));
+        parentToUpdate.setFirstName(parent.getFirstName());
+        parentToUpdate.setLastName(parent.getLastName());
+        parentToUpdate.setEmail(parent.getEmail());
+        parentToUpdate.setPhoneNumber(parent.getPhoneNumber());
 
-            parentRepository.save(parentToUpdate);
-            return parentToUpdate;
-        } else {
-            throw new EntityNotFoundException("Parent with id " + id + " not found");
-        }
+        parentRepository.save(parentToUpdate);
+        return parentToUpdate;
     }
 
     public void deleteById(Integer id) {

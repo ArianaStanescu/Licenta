@@ -99,4 +99,9 @@ public class Activity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void addAd(Ad ad) {
+        ads.add(ad);
+        ad.setActivity(this);
+    }
 }

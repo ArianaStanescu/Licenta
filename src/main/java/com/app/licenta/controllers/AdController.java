@@ -2,15 +2,20 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.AdDto;
 import com.app.licenta.dtos.AdUpdateDto;
-import com.app.licenta.entities.Activity;
-import com.app.licenta.entities.Ad;
+import com.app.licenta.entities.*;
 import com.app.licenta.mappers.ActivityMapper;
 import com.app.licenta.mappers.AdMapper;
 import com.app.licenta.services.ActivityService;
+import com.app.licenta.services.AdImageService;
 import com.app.licenta.services.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -23,12 +28,6 @@ public class AdController {
     @Autowired
     private AdMapper adMapper;
 
-    @Autowired
-    private ActivityMapper activityMapper;
-
-    @Autowired
-    private ActivityService activityService;
-
     @GetMapping("/{id}")
     public AdDto get(@PathVariable Integer id) {
         Ad ad = adService.getById(id);
@@ -40,14 +39,59 @@ public class AdController {
         return adMapper.adListToAdDtoList(adService.findAllByActivityId(activityId));
     }
 
+    @GetMapping("/list-by-trainer/{trainerId}")
+    public Set<AdDto> findAllByTrainerId(@PathVariable Integer trainerId) {
+        return adMapper.adListToAdDtoList(adService.findAllByTrainerId(trainerId));
+    }
+
+    @GetMapping("/search")
+    public List<AdDto> searchAds(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) ActivityCategory category,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(required = false) Gender gender,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) AdStatus status,
+            @RequestParam() int pageNumber,
+            @RequestParam() int pageSize,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+        return adService.searchAds(title, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageNumber, pageSize, sortBy, sortDirection)
+                .stream()
+                .map(adMapper::adToAdDto)
+                .toList();
+    }
+
+    @GetMapping("/search-by-trainer/{trainerId}")
+    public List<AdDto> searchAdsByTrainerId(
+            @PathVariable Integer trainerId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) ActivityCategory category,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(required = false) Gender gender,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) AdStatus status,
+            @RequestParam() int pageNumber,
+            @RequestParam() int pageSize,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDirection) {
+
+        return adService.searchAdsByTrainerId(trainerId, title, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageNumber, pageSize, sortBy, sortDirection)
+                .stream()
+                .map(adMapper::adToAdDto)
+                .toList();
+    }
+
     @PostMapping("/create/{activityId}")
-    public AdDto create(@PathVariable Integer activityId, @RequestBody AdDto adDto) {
-        Activity activity = activityService.getById(activityId);
-        adDto.setActivity(activityMapper.activityToActivityDto(activity));
+    public AdDto create(@PathVariable Integer activityId,
+                        @RequestPart("ad") AdDto adDto,
+                        @RequestPart("image") MultipartFile imageFile) throws IOException {
         Ad adToCreate = adMapper.adDtoToAd(adDto);
-        adToCreate.setActivity(activity);
-        activity.getAds().add(adToCreate);
-        Ad createdAd = adService.createAd(adToCreate);
+        Ad createdAd = adService.createAd(adToCreate, activityId, imageFile.getBytes());
 
         return adMapper.adToAdDto(createdAd);
     }
