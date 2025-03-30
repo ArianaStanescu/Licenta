@@ -28,6 +28,9 @@ public class Parent {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name="fcm_token")
+    private String fcmToken;
+
     @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Child> children = new HashSet<>();
 
@@ -77,6 +80,14 @@ public class Parent {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public Set<Child> getChildren() {

@@ -2,6 +2,7 @@ package com.app.licenta.services;
 
 
 import com.app.licenta.entities.Parent;
+import com.app.licenta.entities.Trainer;
 import com.app.licenta.repositories.ParentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,13 @@ public class ParentService {
 
         parentRepository.save(parentToUpdate);
         return parentToUpdate;
+    }
+
+    public void updateFcmToken(Integer parentId, String fcmToken) {
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new EntityNotFoundException("Parent with id " + parentId + " not found"));
+        parent.setFcmToken(fcmToken);
+        parentRepository.save(parent);
     }
 
     public void deleteById(Integer id) {
