@@ -1,15 +1,14 @@
 package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.NotificationDto;
+import com.app.licenta.dtos.ReadNotificationsDto;
 import com.app.licenta.entities.Notification;
 import com.app.licenta.mappers.NotificationMapper;
 import com.app.licenta.services.NotificationService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/notifications")
@@ -21,9 +20,9 @@ public class NotificationController {
         this.notificationService = notificationService;
     }
 
-    @GetMapping("/mark-as-read/{notificationId}")
-    public void markAsRead(@PathVariable Integer notificationId) {
-        notificationService.markAsRead(notificationId);
+    @PutMapping("/mark-as-seen")
+    public void markAsSeen(@RequestBody ReadNotificationsDto readNotificationsDto) {
+        notificationService.markAsSeen(Optional.ofNullable(readNotificationsDto.getNotificationIds()).orElse(List.of()));
     }
 
     @GetMapping("/latest-for-parent/{parentId}")

@@ -7,6 +7,7 @@ import com.app.licenta.repositories.NotificationRepository;
 import com.app.licenta.repositories.ParentRepository;
 import com.app.licenta.repositories.TrainerRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,12 +49,9 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public void markAsRead(Integer notificationId) {
-        notificationRepository.findById(notificationId)
-                .ifPresent(notification -> {
-                    notification.setSeen(true);
-                    notificationRepository.save(notification);
-                });
+    @Transactional
+    public void markAsSeen(List<Integer> notificationIds) {
+        notificationRepository.markAsSeen(notificationIds);
     }
 
     public List<Notification> findLatestForTrainer(Integer trainerId) {
