@@ -33,6 +33,9 @@ public class Trainer {
     @Temporal(TemporalType.DATE)
     private LocalDate birthDate;
 
+    @Column(name = "fcm_token")
+    private String fcmToken;
+
     @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Activity> activities = new HashSet<>();
 
@@ -103,6 +106,14 @@ public class Trainer {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
     }
 
     public Set<Activity> getActivities() {

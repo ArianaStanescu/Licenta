@@ -56,7 +56,6 @@ public class ActivityController {
         return activityMapper.activityToActivityUpdateDto(activityService.update(id, activityMapper.activityUpdateDtoToActivity(activityUpdateDto)));
     }
 
-
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {
         activityService.deleteById(id);

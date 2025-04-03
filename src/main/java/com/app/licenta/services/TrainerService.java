@@ -48,6 +48,13 @@ public class TrainerService {
         return trainerToUpdate;
     }
 
+    public void updateFcmToken(Integer trainerId, String fcmToken) {
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + trainerId + " not found"));
+        trainer.setFcmToken(fcmToken);
+        trainerRepository.save(trainer);
+    }
+
     public void deleteById(Integer id) {
         if (trainerRepository.existsById(id)) {
             trainerRepository.deleteById(id);

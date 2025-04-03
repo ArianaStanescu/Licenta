@@ -15,7 +15,7 @@ public class SessionMapper {
     @Autowired
     private GroupMapper groupMapper;
 
-    public Session sessionDtoToSession(SessionDto sessionDto){
+    public Session sessionDtoToSession(SessionDto sessionDto) {
         Session session = new Session();
         //session.setId(sessionDto.getId());
         session.setDateTime(sessionDto.getDateTime());
@@ -23,7 +23,7 @@ public class SessionMapper {
         return session;
     }
 
-    public SessionGetDto sessionToSessionGetDto(Session session){
+    public SessionGetDto sessionToSessionGetDto(Session session) {
         SessionGetDto sessionGetDto = new SessionGetDto();
         sessionGetDto.setId(session.getId());
         sessionGetDto.setDateTime(session.getDateTime());
@@ -31,11 +31,11 @@ public class SessionMapper {
         return sessionGetDto;
     }
 
-    public Set<SessionGetDto> sessionListToSessionDtoList(Set<Session> sessionList){
+    public Set<SessionGetDto> sessionListToSessionDtoList(Set<Session> sessionList) {
         return sessionList.stream().map(this::sessionToSessionGetDto).collect(Collectors.toSet());
     }
 
-    public SessionDto sessionToSessionDto(Session session){
+    public SessionDto sessionToSessionDto(Session session) {
         SessionDto sessionDto = new SessionDto();
         sessionDto.setId(session.getId());
         sessionDto.setDateTime(session.getDateTime());
