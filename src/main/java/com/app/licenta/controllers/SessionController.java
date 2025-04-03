@@ -11,6 +11,7 @@ import com.app.licenta.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -30,15 +31,13 @@ public class SessionController {
     private GroupMapper groupMapper;
 
     @PostMapping("/create/{groupId}")
-    public SessionDto create(@PathVariable Integer groupId, @RequestBody SessionDto sessionDto) {
-        Group group = groupService.getById(groupId);
-        sessionDto.setGroup(groupMapper.groupToGroupDto(group));
-        Session sessionToCreate = sessionMapper.sessionDtoToSession(sessionDto);
-        sessionToCreate.setGroup(group);
-        group.getSessions().add(sessionToCreate);
-        Session createdSession = sessionService.createSession(sessionToCreate);
+    public List<SessionDto> create(@PathVariable Integer groupId) {
 
-        return sessionMapper.sessionToSessionDto(createdSession);
+        List<Session> sessions = sessionService.createSessions(groupId);
+
+        return sessions.stream()
+                .map(sessionMapper::sessionToSessionDto)
+                .toList();
     }
 
     @GetMapping("/{id}")

@@ -52,23 +52,13 @@ public class Ad {
     @Column(name = "total_spots")
     private Integer totalSpots;
 
-    @Column(name = "meeting_days")
+    @Column(name = "duration_rules")
     @JdbcTypeCode(JSON)
-    private Set<Day> activityDays = new HashSet<>();
-
-//    @ManyToOne
-//    @JoinColumn(name = "trainer_id")
-//    private Trainer trainer;
+    private Set<DurationRule> durationRules = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "activity_id")
     private Activity activity;
-
-//    @ManyToMany(cascade={})
-//    @JoinTable(name="ad_children", schema = "public",
-//            joinColumns = @JoinColumn(name="ad_id"),
-//            inverseJoinColumns = @JoinColumn(name="child_id"))
-//    private Set<Child> children = new HashSet<>();
 
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
@@ -172,12 +162,20 @@ public class Ad {
         this.totalSpots = totalSpots;
     }
 
-    public Set<Day> getActivityDays() {
-        return activityDays;
+    public Set<DurationRule> getDurationRules() {
+        return durationRules;
     }
 
-    public void setActivityDays(Set<Day> activityDays) {
-        this.activityDays = activityDays;
+    public void setDurationRules(Set<DurationRule> durationRules) {
+        this.durationRules = durationRules;
+    }
+
+    public AdImage getImage() {
+        return image;
+    }
+
+    public void setImage(AdImage image) {
+        this.image = image;
     }
 
     public Activity getActivity() {

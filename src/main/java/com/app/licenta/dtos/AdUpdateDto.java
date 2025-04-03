@@ -1,9 +1,6 @@
 package com.app.licenta.dtos;
 
-import com.app.licenta.entities.ActivityCategory;
-import com.app.licenta.entities.AdStatus;
-import com.app.licenta.entities.Day;
-import com.app.licenta.entities.Gender;
+import com.app.licenta.entities.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -22,7 +19,7 @@ public class AdUpdateDto {
     private LocalDate endDate;
     private AdStatus status;
     private Integer totalSpots;
-    private Set<Day> activityDays = new HashSet<>();
+    private Set<DurationRule> durationRules = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -120,11 +117,11 @@ public class AdUpdateDto {
         this.totalSpots = totalSpots;
     }
 
-    public Set<Day> getActivityDays() {
-        return activityDays;
+    public Set<DurationRule> getDurationRules() {
+        return durationRules;
     }
 
-    public void setActivityDays(Set<Day> activityDays) {
-        this.activityDays = activityDays;
+    public void setDurationRules(Set<DurationRule> durationRules) {
+        this.durationRules = durationRules;
     }
 }

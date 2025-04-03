@@ -28,7 +28,7 @@ public class GroupMapper {
         group.setMaxAge(groupDto.getMaxAge());
         group.setGender(groupDto.getGender());
         group.setStatus(groupDto.getStatus());
-        group.setActivityDays(groupDto.getActivityDays());
+        group.setDurationRules(groupDto.getDurationRules());
         group.setActivity(activityMapper.activityDtoToActivity(groupDto.getActivity()));
         return group;
     }
@@ -43,7 +43,7 @@ public class GroupMapper {
         groupDto.setMaxAge(group.getMaxAge());
         groupDto.setGender(group.getGender());
         groupDto.setStatus(group.getStatus());
-        groupDto.setActivityDays(group.getActivityDays());
+        groupDto.setDurationRules(group.getDurationRules());
         groupDto.setActivity(activityMapper.activityToActivityDto(group.getActivity()));
         return groupDto;
     }
@@ -62,7 +62,7 @@ public class GroupMapper {
         groupGetDto.setMaxAge(group.getMaxAge());
         groupGetDto.setGender(group.getGender());
         groupGetDto.setStatus(group.getStatus());
-        groupGetDto.setActivityDays(group.getActivityDays());
+        groupGetDto.setDurationRules(group.getDurationRules());
         groupGetDto.setActivity(activityMapper.activityToActivityDto(group.getActivity()));
         groupGetDto.setChildren(group.getChildren().stream().map(child -> childMapper.childToChildDto(child)).collect(Collectors.toSet()));
         return groupGetDto;
