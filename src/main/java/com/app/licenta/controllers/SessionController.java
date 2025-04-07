@@ -2,7 +2,6 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.SessionDto;
 import com.app.licenta.dtos.SessionGetDto;
-import com.app.licenta.entities.Group;
 import com.app.licenta.entities.Session;
 import com.app.licenta.mappers.GroupMapper;
 import com.app.licenta.mappers.SessionMapper;

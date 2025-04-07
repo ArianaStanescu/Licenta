@@ -2,8 +2,11 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.GroupDto;
 import com.app.licenta.dtos.GroupGetDto;
+import com.app.licenta.emails.EmailService;
+import com.app.licenta.entities.Child;
 import com.app.licenta.entities.Group;
 import com.app.licenta.mappers.GroupMapper;
+import com.app.licenta.notifications.FirebaseNotificationSender;
 import com.app.licenta.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +20,10 @@ public class GroupController {
     private GroupService groupService;
     @Autowired
     private GroupMapper groupMapper;
+    @Autowired
+    private EmailService emailService;
+    @Autowired
+    private FirebaseNotificationSender firebaseNotificationSender;
 
     @GetMapping("/{id}")
     public GroupGetDto get(@PathVariable Integer id) {
@@ -42,6 +49,17 @@ public class GroupController {
     @PostMapping("/create/{activityId}/{adId}")
     public GroupDto create(@PathVariable Integer activityId, @PathVariable Integer adId) {
         Group createdGroup = groupService.createGroup(activityId, adId);
+
+        String bodyMessage = "Grupa " + createdGroup.getTitle() + " a fost creata cu succes!";
+        String subjectMessage = "Grupa a fost creata!";
+
+
+        Set<Child> children = createdGroup.getChildren();
+        for (Child child : children) {
+            Integer parentId = child.getParent().getId();
+            emailService.sendVerificationEmail(child.getParent().getEmail(), subjectMessage, bodyMessage);
+            firebaseNotificationSender.sendNotificationForParent(parentId, subjectMessage, bodyMessage);
+        }
 
         return groupMapper.groupToGroupDto(createdGroup);
     }
