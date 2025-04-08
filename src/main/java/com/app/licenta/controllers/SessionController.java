@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/sessions")
@@ -46,8 +45,15 @@ public class SessionController {
     }
 
     @GetMapping("/list/{groupId}")
-    public Set<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId) {
-        return sessionMapper.sessionListToSessionDtoList(sessionService.findAllByGroupId(groupId));
+    public List<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId,
+                                                @RequestParam Integer pageNumber,
+                                                @RequestParam Integer pageSize,
+                                                @RequestParam(required = false) String sortBy,
+                                                @RequestParam(required = false) String sortDirection) {
+        List<Session> sessions = sessionService.findAllByGroupId(groupId, pageNumber, pageSize, sortBy, sortDirection);
+        return sessions.stream()
+                .map(sessionMapper::sessionToSessionGetDto)
+                .toList();
     }
 
     @DeleteMapping("/{id}")

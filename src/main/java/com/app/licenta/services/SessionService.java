@@ -5,6 +5,9 @@ import com.app.licenta.repositories.GroupRepository;
 import com.app.licenta.repositories.SessionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -75,8 +79,15 @@ public class SessionService {
     }
 
 
-    public Set<Session> findAllByGroupId(Integer groupId) {
-        return sessionRepository.findAllByGroupId(groupId);
+    public List<Session> findAllByGroupId(Integer groupId, Integer pageNumber, Integer pageSize, String sortBy, String sortDirection) {
+        Sort.Direction direction = Optional.ofNullable(sortDirection)
+                .map(Sort.Direction::fromString)
+                .orElse(Sort.Direction.ASC);
+        Sort sort = Optional.ofNullable(sortBy)
+                .map(s -> Sort.by(direction, s))
+                .orElse(Sort.by(direction, "startDateTime"));
+        Pageable page = PageRequest.of(pageNumber, pageSize, sort);
+        return sessionRepository.findAllByGroupId(groupId, page);
     }
 
     // update
