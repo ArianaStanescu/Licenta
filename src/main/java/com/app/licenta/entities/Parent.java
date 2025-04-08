@@ -28,11 +28,19 @@ public class Parent {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name="fcm_token")
+    @Column(name = "fcm_token")
     private String fcmToken;
 
     @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Child> children = new HashSet<>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "parent_trainer_favorites", schema = "public",
+            joinColumns = @JoinColumn(name = "parent_id"),
+            inverseJoinColumns = @JoinColumn(name = "trainer_id")
+    )
+    private Set<Trainer> favoriteTrainers = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -96,5 +104,13 @@ public class Parent {
 
     public void setChildren(Set<Child> children) {
         this.children = children;
+    }
+
+    public Set<Trainer> getFavoriteTrainers() {
+        return favoriteTrainers;
+    }
+
+    public void setFavoriteTrainers(Set<Trainer> favoriteTrainers) {
+        this.favoriteTrainers = favoriteTrainers;
     }
 }

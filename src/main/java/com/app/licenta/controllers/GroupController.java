@@ -50,16 +50,10 @@ public class GroupController {
     public GroupDto create(@PathVariable Integer activityId, @PathVariable Integer adId) {
         Group createdGroup = groupService.createGroup(activityId, adId);
 
-        String bodyMessage = "Grupa " + createdGroup.getTitle() + " a fost creata cu succes!";
-        String subjectMessage = "Grupa a fost creata!";
-
-
-        Set<Child> children = createdGroup.getChildren();
-        for (Child child : children) {
-            Integer parentId = child.getParent().getId();
-            emailService.sendVerificationEmail(child.getParent().getEmail(), subjectMessage, bodyMessage);
-            firebaseNotificationSender.sendNotificationForParent(parentId, subjectMessage, bodyMessage);
-        }
+        createdGroup.getChildren().forEach(child -> {
+            firebaseNotificationSender.sendNotificationForNewlyCreatedGroup(child.getParent().getId(), createdGroup.getTitle());
+            emailService.sendEmailForNewlyCreatedGroup(child.getParent().getEmail(), createdGroup.getTitle());
+        });
 
         return groupMapper.groupToGroupDto(createdGroup);
     }
