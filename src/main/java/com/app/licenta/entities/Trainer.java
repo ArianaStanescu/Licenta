@@ -39,6 +39,9 @@ public class Trainer {
     @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Activity> activities = new HashSet<>();
 
+    @ManyToMany(mappedBy = "favoriteTrainers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Parent> followersParents = new HashSet<>();
+
 //    @OneToMany(mappedBy = "authorTrainer", cascade = {})
 //    private Set<SessionComment> sessionComments = new HashSet<>();
 //
@@ -74,6 +77,11 @@ public class Trainer {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Transient
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
     }
 
     public String getEmail() {
@@ -122,5 +130,13 @@ public class Trainer {
 
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
+    }
+
+    public Set<Parent> getFollowersParents() {
+        return followersParents;
+    }
+
+    public void setFollowersParents(Set<Parent> followersParents) {
+        this.followersParents = followersParents;
     }
 }

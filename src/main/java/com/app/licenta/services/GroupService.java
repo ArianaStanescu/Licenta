@@ -32,7 +32,8 @@ public class GroupService {
         group.setGender(ad.getGender());
         group.setStatus(ChildrenGroupStatus.ACTIVE);
         group.setActivity(activity);
-        group.setActivityDays(ad.getActivityDays());
+        group.setAd(ad);
+        group.setDurationRules(ad.getDurationRules());
 
         List<EnrollmentRequest> approvedRequests = ad.getEnrollmentRequests().stream()
                 .filter(er -> er.getStatus() == EnrollmentStatus.APPROVED)

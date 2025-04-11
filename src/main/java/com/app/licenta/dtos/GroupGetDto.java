@@ -1,9 +1,6 @@
 package com.app.licenta.dtos;
 
-import com.app.licenta.entities.Child;
-import com.app.licenta.entities.ChildrenGroupStatus;
-import com.app.licenta.entities.Day;
-import com.app.licenta.entities.Gender;
+import com.app.licenta.entities.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +14,7 @@ public class GroupGetDto {
     private Integer maxAge;
     private Gender gender;
     private ChildrenGroupStatus status;
-    private Set<Day> activityDays = new HashSet<>();
+    private Set<DurationRule> durationRules = new HashSet<>();
     private Set<ChildDto> children = new HashSet<>();
     private ActivityDto activity;
 
@@ -85,12 +82,12 @@ public class GroupGetDto {
         this.status = status;
     }
 
-    public Set<Day> getActivityDays() {
-        return activityDays;
+    public Set<DurationRule> getDurationRules() {
+        return durationRules;
     }
 
-    public void setActivityDays(Set<Day> activityDays) {
-        this.activityDays = activityDays;
+    public void setDurationRules(Set<DurationRule> durationRules) {
+        this.durationRules = durationRules;
     }
 
     public Set<ChildDto> getChildren() {

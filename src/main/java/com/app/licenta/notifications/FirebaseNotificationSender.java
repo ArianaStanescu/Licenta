@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static com.app.licenta.commons.EmailNotificationMessages.*;
+
 @Component
 public class FirebaseNotificationSender {
 
@@ -28,6 +30,16 @@ public class FirebaseNotificationSender {
         this.notificationService = notificationService;
         this.parentRepository = parentRepository;
         this.trainerRepository = trainerRepository;
+    }
+
+    @Async
+    public void sendNotificationForNewlyCreatedAd(Integer parentId, String trainerName) {
+        sendNotificationForParent(parentId, NEW_AD_CREATED_TITLE, NEW_AD_CREATED_BODY.formatted(trainerName));
+    }
+
+    @Async
+    public void sendNotificationForNewlyCreatedGroup(Integer parentId, String groupName) {
+        sendNotificationForParent(parentId, NEW_GROUP_CREATED_TITLE, NEW_GROUP_CREATED_BODY.formatted(groupName));
     }
 
     @Async

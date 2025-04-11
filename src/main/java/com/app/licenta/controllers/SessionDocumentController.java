@@ -1,12 +1,10 @@
 package com.app.licenta.controllers;
 
+import com.app.licenta.dtos.SessionDocumentDto;
 import com.app.licenta.entities.SessionDocument;
 import com.app.licenta.services.SessionDocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,18 +18,29 @@ public class SessionDocumentController {
     private SessionDocumentService sessionDocumentService;
 
     @PostMapping("/create/{sessionId}")
-    public ResponseEntity<String> create(@PathVariable Integer sessionId, @RequestPart("document") MultipartFile document) throws IOException {
-        sessionDocumentService.create(sessionId, document);
+    public ResponseEntity<String> create(@PathVariable Integer sessionId, @RequestPart("title") String title, @RequestPart("document") MultipartFile document) throws IOException {
+        sessionDocumentService.create(sessionId, title, document);
         return ResponseEntity.status(HttpStatus.CREATED).body("Document uploaded successfully ");
     }
 
-    @GetMapping("/{sessionId}")
-    public ResponseEntity<byte[]> getDocumentBySessionId(@PathVariable Integer sessionId) {
+    @GetMapping("/title/{sessionId}")
+    public ResponseEntity<SessionDocumentDto> getDocumentMeta(@PathVariable Integer sessionId) {
+        SessionDocument sessionDocument = sessionDocumentService.getBySessionId(sessionId);
+
+        SessionDocumentDto response = new SessionDocumentDto();
+        response.setTitle(sessionDocument.getTitle());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/download/{sessionId}")
+    public ResponseEntity<byte[]> downloadDocument(@PathVariable Integer sessionId) {
         SessionDocument sessionDocument = sessionDocumentService.getBySessionId(sessionId);
         byte[] documentData = sessionDocument.getDocumentData();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
+
         return new ResponseEntity<>(documentData, headers, HttpStatus.OK);
     }
 

@@ -19,10 +19,11 @@ public class SessionDocumentService {
     @Autowired
     private SessionService sessionService;
 
-    public SessionDocument create(Integer sessionId, MultipartFile file) throws IOException {
+    public SessionDocument create(Integer sessionId, String title, MultipartFile file) throws IOException {
         SessionDocument document = new SessionDocument();
         Session session = sessionService.getById(sessionId);
         document.setSession(session);
+        document.setTitle(title);
         document.setDocumentData(file.getBytes());
         session.getDocuments().add(document);
         return sessionDocumentRepository.save(document);

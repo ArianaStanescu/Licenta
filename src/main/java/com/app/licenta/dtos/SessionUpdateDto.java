@@ -2,19 +2,10 @@ package com.app.licenta.dtos;
 
 import java.time.LocalDateTime;
 
-public class SessionGetDto {
-    private Integer id;
+public class SessionUpdateDto {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private String note;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public LocalDateTime getStartDateTime() {
         return startDateTime;

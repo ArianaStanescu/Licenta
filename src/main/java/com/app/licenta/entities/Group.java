@@ -38,21 +38,17 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private ChildrenGroupStatus status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "ad_id")
-//    private Ad ad;
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
 
     @ManyToOne
     @JoinColumn(name = "activity_id")
     private Activity activity;
 
-    @Column(name = "meeting_days")
+    @Column(name = "duration_rules")
     @JdbcTypeCode(JSON)
-    private Set<Day> activityDays = new HashSet<>();
-
-//    @ManyToOne
-//    @JoinColumn(name = "trainer_id")
-//    private Trainer trainer;
+    private Set<DurationRule> durationRules = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -129,6 +125,14 @@ public class Group {
         this.status = status;
     }
 
+    public Ad getAd() {
+        return ad;
+    }
+
+    public void setAd(Ad ad) {
+        this.ad = ad;
+    }
+
     public Activity getActivity() {
         return activity;
     }
@@ -137,12 +141,12 @@ public class Group {
         this.activity = activity;
     }
 
-    public Set<Day> getActivityDays() {
-        return activityDays;
+    public Set<DurationRule> getDurationRules() {
+        return durationRules;
     }
 
-    public void setActivityDays(Set<Day> activityDays) {
-        this.activityDays = activityDays;
+    public void setDurationRules(Set<DurationRule> durationRules) {
+        this.durationRules = durationRules;
     }
 
     public Set<Child> getChildren() {

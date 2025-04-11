@@ -2,16 +2,14 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.SessionDto;
 import com.app.licenta.dtos.SessionGetDto;
-import com.app.licenta.entities.Group;
+import com.app.licenta.dtos.SessionUpdateDto;
 import com.app.licenta.entities.Session;
-import com.app.licenta.mappers.GroupMapper;
 import com.app.licenta.mappers.SessionMapper;
-import com.app.licenta.services.GroupService;
 import com.app.licenta.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @RestController
 @RequestMapping("/sessions")
@@ -23,22 +21,14 @@ public class SessionController {
     @Autowired
     private SessionMapper sessionMapper;
 
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private GroupMapper groupMapper;
-
     @PostMapping("/create/{groupId}")
-    public SessionDto create(@PathVariable Integer groupId, @RequestBody SessionDto sessionDto) {
-        Group group = groupService.getById(groupId);
-        sessionDto.setGroup(groupMapper.groupToGroupDto(group));
-        Session sessionToCreate = sessionMapper.sessionDtoToSession(sessionDto);
-        sessionToCreate.setGroup(group);
-        group.getSessions().add(sessionToCreate);
-        Session createdSession = sessionService.createSession(sessionToCreate);
+    public List<SessionDto> create(@PathVariable Integer groupId) {
 
-        return sessionMapper.sessionToSessionDto(createdSession);
+        List<Session> sessions = sessionService.createSessions(groupId);
+
+        return sessions.stream()
+                .map(sessionMapper::sessionToSessionDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
@@ -48,8 +38,27 @@ public class SessionController {
     }
 
     @GetMapping("/list/{groupId}")
-    public Set<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId) {
-        return sessionMapper.sessionListToSessionDtoList(sessionService.findAllByGroupId(groupId));
+    public List<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId,
+                                                @RequestParam Integer pageNumber,
+                                                @RequestParam Integer pageSize,
+                                                @RequestParam(required = false) String sortBy,
+                                                @RequestParam(required = false) String sortDirection) {
+        List<Session> sessions = sessionService.findAllByGroupId(groupId, pageNumber, pageSize, sortBy, sortDirection);
+        return sessions.stream()
+                .map(sessionMapper::sessionToSessionGetDto)
+                .toList();
+    }
+
+    @PutMapping("/update-note/{id}")
+    public SessionGetDto updateNote(@PathVariable Integer id, @RequestBody SessionUpdateDto noteDto) {
+        Session updated = sessionService.updateNote(id, noteDto);
+        return sessionMapper.sessionToSessionGetDto(updated);
+    }
+
+    @PutMapping("/update-date/{id}")
+    public SessionGetDto updateDate(@PathVariable Integer id, @RequestBody SessionUpdateDto dateDto) {
+        Session updated = sessionService.updateDate(id, dateDto);
+        return sessionMapper.sessionToSessionGetDto(updated);
     }
 
     @DeleteMapping("/{id}")

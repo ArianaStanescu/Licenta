@@ -4,8 +4,12 @@ package com.app.licenta.services;
 import com.app.licenta.entities.Parent;
 import com.app.licenta.entities.Trainer;
 import com.app.licenta.repositories.ParentRepository;
+import com.app.licenta.repositories.TrainerRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +19,46 @@ public class ParentService {
 
     @Autowired
     private ParentRepository parentRepository;
+    @Autowired
+    private TrainerRepository trainerRepository;
 
     public Parent createParent(Parent parent) {
         return parentRepository.save(parent);
+    }
+
+    @Transactional
+    public void addFavoriteTrainer(Integer parentId, Integer trainerId) {
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new EntityNotFoundException("Parent with id " + parentId + " not found"));
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + trainerId + " not found"));
+        parent.getFavoriteTrainers().add(trainer);
+        trainer.getFollowersParents().add(parent);
+        parentRepository.save(parent);
+    }
+
+    @Transactional
+    public List<Trainer> getFavoriteTrainers(Integer parentId, int pageNumber, int pageSize) {
+        parentRepository.findById(parentId)
+                .orElseThrow(() -> new EntityNotFoundException("Parent with id " + parentId + " not found"));
+
+        Pageable page = PageRequest.of(pageNumber, pageSize);
+        return trainerRepository.findAllByFollowersParentsId(parentId, page);
+    }
+
+    public boolean hasFavoriteTrainer(Integer parentId, Integer trainerId) {
+        return parentRepository.existsByIdAndFavoriteTrainersId(parentId, trainerId);
+    }
+
+    @Transactional
+    public void removeFavoriteTrainer(Integer parentId, Integer trainerId) {
+        Parent parent = parentRepository.findById(parentId)
+                .orElseThrow(() -> new EntityNotFoundException("Parent with id " + parentId + " not found"));
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + trainerId + " not found"));
+        parent.getFavoriteTrainers().remove(trainer);
+        trainer.getFollowersParents().remove(parent);
+        parentRepository.save(parent);
     }
 
     public Parent getById(Integer id) {

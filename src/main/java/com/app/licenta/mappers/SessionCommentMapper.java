@@ -22,7 +22,6 @@ public class SessionCommentMapper {
 
     public SessionComment sessionCommentDtoToSessionComment(SessionCommentDto sessionCommentDto){
         SessionComment sessionComment = new SessionComment();
-        //sessionComment.setId(sessionCommentDto.getId());
         sessionComment.setContent(sessionCommentDto.getContent());
         sessionComment.setCreatedAt(sessionCommentDto.getCreatedAt());
         if(sessionCommentDto.getAuthorParent() != null)

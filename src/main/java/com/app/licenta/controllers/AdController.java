@@ -2,11 +2,10 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.AdDto;
 import com.app.licenta.dtos.AdUpdateDto;
+import com.app.licenta.emails.EmailService;
 import com.app.licenta.entities.*;
-import com.app.licenta.mappers.ActivityMapper;
 import com.app.licenta.mappers.AdMapper;
-import com.app.licenta.services.ActivityService;
-import com.app.licenta.services.AdImageService;
+import com.app.licenta.notifications.FirebaseNotificationSender;
 import com.app.licenta.services.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +26,12 @@ public class AdController {
 
     @Autowired
     private AdMapper adMapper;
+
+    @Autowired
+    private EmailService emailService;
+
+    @Autowired
+    private FirebaseNotificationSender firebaseNotificationSender;
 
     @GetMapping("/{id}")
     public AdDto get(@PathVariable Integer id) {
@@ -93,6 +98,11 @@ public class AdController {
         Ad adToCreate = adMapper.adDtoToAd(adDto);
         Ad createdAd = adService.createAd(adToCreate, activityId, imageFile.getBytes());
 
+        Trainer trainer = createdAd.getActivity().getTrainer();
+        trainer.getFollowersParents().forEach(parent -> {
+            emailService.sendEmailForNewlyCreatedAd(parent.getEmail(), trainer.getFullName());
+            firebaseNotificationSender.sendNotificationForNewlyCreatedAd(parent.getId(), trainer.getFullName());
+        });
         return adMapper.adToAdDto(createdAd);
     }
 
