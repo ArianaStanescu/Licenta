@@ -11,6 +11,9 @@ public class SessionDocument {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "title")
+    private String title;
+
     @Lob
     @JdbcTypeCode(SqlTypes.BINARY)
     @Column(name = "document_data", columnDefinition = "bytea")
@@ -26,6 +29,14 @@ public class SessionDocument {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public byte[] getDocumentData() {
