@@ -1,5 +1,6 @@
 package com.app.licenta.services;
 
+import com.app.licenta.dtos.SessionUpdateDto;
 import com.app.licenta.entities.*;
 import com.app.licenta.repositories.GroupRepository;
 import com.app.licenta.repositories.SessionRepository;
@@ -90,7 +91,20 @@ public class SessionService {
         return sessionRepository.findAllByGroupId(groupId, page);
     }
 
-    // update
+    public Session updateNote(Integer id, SessionUpdateDto noteDto) {
+        Session session = sessionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Session with id " + id + " not found"));
+        session.setNote(noteDto.getNote());
+        return sessionRepository.save(session);
+    }
+
+    public Session updateDate(Integer id, SessionUpdateDto dateDto) {
+        Session session = sessionRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Session with id " + id + " not found"));
+        session.setStartDateTime(dateDto.getStartDateTime());
+        session.setEndDateTime(dateDto.getEndDateTime());
+        return sessionRepository.save(session);
+    }
 
     public void deleteById(Integer id) {
         sessionRepository.deleteById(id);

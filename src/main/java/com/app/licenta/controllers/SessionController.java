@@ -2,10 +2,9 @@ package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.SessionDto;
 import com.app.licenta.dtos.SessionGetDto;
+import com.app.licenta.dtos.SessionUpdateDto;
 import com.app.licenta.entities.Session;
-import com.app.licenta.mappers.GroupMapper;
 import com.app.licenta.mappers.SessionMapper;
-import com.app.licenta.services.GroupService;
 import com.app.licenta.services.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +20,6 @@ public class SessionController {
 
     @Autowired
     private SessionMapper sessionMapper;
-
-    @Autowired
-    private GroupService groupService;
-
-    @Autowired
-    private GroupMapper groupMapper;
 
     @PostMapping("/create/{groupId}")
     public List<SessionDto> create(@PathVariable Integer groupId) {
@@ -54,6 +47,18 @@ public class SessionController {
         return sessions.stream()
                 .map(sessionMapper::sessionToSessionGetDto)
                 .toList();
+    }
+
+    @PutMapping("/update-note/{id}")
+    public SessionGetDto updateNote(@PathVariable Integer id, @RequestBody SessionUpdateDto noteDto) {
+        Session updated = sessionService.updateNote(id, noteDto);
+        return sessionMapper.sessionToSessionGetDto(updated);
+    }
+
+    @PutMapping("/update-date/{id}")
+    public SessionGetDto updateDate(@PathVariable Integer id, @RequestBody SessionUpdateDto dateDto) {
+        Session updated = sessionService.updateDate(id, dateDto);
+        return sessionMapper.sessionToSessionGetDto(updated);
     }
 
     @DeleteMapping("/{id}")
