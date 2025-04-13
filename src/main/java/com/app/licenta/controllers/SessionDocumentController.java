@@ -45,7 +45,7 @@ public class SessionDocumentController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable Integer id) {
-        sessionDocumentService.deleteById(id);
+    public void deleteBySessionId(@PathVariable Integer id) {
+        sessionDocumentService.deleteBySessionId(id);
     }
 }

@@ -5,8 +5,8 @@ import com.app.licenta.entities.SessionComment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class SessionCommentMapper {
@@ -20,42 +20,37 @@ public class SessionCommentMapper {
     @Autowired
     private SessionMapper sessionMapper;
 
-    public SessionComment sessionCommentDtoToSessionComment(SessionCommentDto sessionCommentDto){
+    public SessionComment sessionCommentDtoToSessionComment(SessionCommentDto sessionCommentDto) {
         SessionComment sessionComment = new SessionComment();
         sessionComment.setContent(sessionCommentDto.getContent());
-        sessionComment.setCreatedAt(sessionCommentDto.getCreatedAt());
-        if(sessionCommentDto.getAuthorParent() != null)
-            sessionComment.setAuthorParent(parentMapper.parentDtoToParent(sessionCommentDto.getAuthorParent()));
-        else
-            sessionComment.setAuthorTrainer(trainerMapper.trainerDtoToTrainer(sessionCommentDto.getAuthorTrainer()));
-        sessionComment.setSession(sessionMapper.sessionDtoToSession(sessionCommentDto.getSession()));
-        if(sessionCommentDto.getReadByParents() != null)
-            sessionComment.setReadByParents(sessionCommentDto.getReadByParents().stream().map(parentMapper::parentDtoToParent).collect(Collectors.toSet()));
-        if(sessionCommentDto.getReadByTrainer() != null)
-            sessionComment.setReadByTrainer(trainerMapper.trainerDtoToTrainer(sessionCommentDto.getReadByTrainer()));
+        sessionComment.setCreatedAt(LocalDateTime.now());
         return sessionComment;
     }
 
-    public SessionCommentDto sessionCommentToSessionCommentDto(SessionComment sessionComment){
+    public SessionCommentDto sessionCommentToSessionCommentDto(SessionComment sessionComment, boolean isTrainer, Integer userId) {
         SessionCommentDto sessionCommentDto = new SessionCommentDto();
         sessionCommentDto.setId(sessionComment.getId());
         sessionCommentDto.setContent(sessionComment.getContent());
         sessionCommentDto.setCreatedAt(sessionComment.getCreatedAt());
-        if(sessionComment.getAuthorParent() != null)
+        if (sessionComment.getAuthorParent() != null) {
             sessionCommentDto.setAuthorParent(parentMapper.parentToParentDto(sessionComment.getAuthorParent()));
-        else
+        } else {
             sessionCommentDto.setAuthorTrainer(trainerMapper.trainerToTrainerDto(sessionComment.getAuthorTrainer()));
-        if(sessionComment.getSession() != null)
-            sessionCommentDto.setSession(sessionMapper.sessionToSessionDto(sessionComment.getSession()));
-        if(sessionComment.getReadByParents() != null)
-            sessionCommentDto.setReadByParents(sessionComment.getReadByParents().stream().map(parentMapper::parentToParentDto).collect(Collectors.toSet()));
-        if(sessionComment.getReadByTrainer() != null)
-            sessionCommentDto.setReadByTrainer(trainerMapper.trainerToTrainerDto(sessionComment.getReadByTrainer()));
+        }
+        sessionCommentDto.setRead(false);
+        if (sessionComment.getReadByTrainer() != null && isTrainer && sessionComment.getReadByTrainer().getId().equals(userId)) {
+            sessionCommentDto.setRead(true);
+        }
+        if (!sessionComment.getReadByParents().isEmpty() && !isTrainer) {
+            sessionCommentDto.setRead(sessionComment.getReadByParents().stream().anyMatch(parent -> parent.getId().equals(userId)));
+        }
         return sessionCommentDto;
     }
 
-    public Set<SessionCommentDto> sessionCommentListToSessionCommentDtoList(Set<SessionComment> sessionComments){
-        return sessionComments.stream().map(this::sessionCommentToSessionCommentDto).collect(Collectors.toSet());
+    public List<SessionCommentDto> sessionCommentListToSessionCommentDtoList(List<SessionComment> sessionComments, boolean isTrainer, Integer userId) {
+        return sessionComments.stream()
+                .map(comment -> sessionCommentToSessionCommentDto(comment, isTrainer, userId))
+                .toList();
     }
 
 

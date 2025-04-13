@@ -4,6 +4,7 @@ import com.app.licenta.entities.Session;
 import com.app.licenta.entities.SessionDocument;
 import com.app.licenta.repositories.SessionDocumentRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +35,8 @@ public class SessionDocumentService {
                 .orElseThrow(() -> new EntityNotFoundException("Document not found"));
     }
 
-    public void deleteById(Integer sessionId) {
-        sessionDocumentRepository.deleteById(sessionId);
+    @Transactional
+    public void deleteBySessionId(Integer sessionDocumentId) {
+        sessionDocumentRepository.deleteBySessionId(sessionDocumentId);
     }
 }

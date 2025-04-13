@@ -7,6 +7,7 @@ public class SessionGetDto {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private String note;
+    private boolean newComments;
 
     public Integer getId() {
         return id;
@@ -38,5 +39,13 @@ public class SessionGetDto {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public boolean isNewComments() {
+        return newComments;
+    }
+
+    public void setNewComments(boolean newComments) {
+        this.newComments = newComments;
     }
 }

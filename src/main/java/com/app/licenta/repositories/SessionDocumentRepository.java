@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface SessionDocumentRepository extends JpaRepository<SessionDocument, Integer> {
     Optional<SessionDocument> findBySessionId(Integer sessionId);
+    void deleteBySessionId(Integer sessionId);
 }
