@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -37,64 +38,84 @@ public class SessionCommentController {
     @Autowired
     private ParentMapper parentMapper;
 
-    @GetMapping("/{id}")
-    public SessionCommentDto get(@PathVariable Integer id) {
-        SessionComment sessionComment = sessionCommentService.getById(id);
-        return sessionCommentMapper.sessionCommentToSessionCommentDto(sessionComment);
-    }
-
     @GetMapping("/list-by-trainer/{sessionId}/{trainerId}")
-    public Set<SessionCommentDto> findAllBySessionIdForTrainer (@PathVariable Integer sessionId, @PathVariable Integer trainerId) {
+    public List<SessionCommentDto> findAllBySessionIdForTrainer(@PathVariable Integer sessionId,
+                                                                @PathVariable Integer trainerId,
+                                                                @RequestParam Integer pageNumber,
+                                                                @RequestParam Integer pageSize) {
+        List<SessionComment> sessionComments = sessionCommentService.findBySessionId(sessionId, pageNumber, pageSize);
+        List<SessionCommentDto> sessionCommentDtos = sessionCommentMapper.sessionCommentListToSessionCommentDtoList(sessionComments, true, trainerId);
+
         Trainer trainer = trainerService.getById(trainerId);
-        Set<SessionComment> sessionComments = sessionCommentService.findAllBySessionId(sessionId);
         sessionComments.forEach(comment -> {
             comment.setReadByTrainer(trainer);
             sessionCommentService.save(comment);
         });
-        return sessionCommentMapper.sessionCommentListToSessionCommentDtoList(sessionComments);
+        return sessionCommentDtos;
     }
 
     @PostMapping("/create-by-trainer/{sessionId}/{trainerId}")
     public SessionCommentDto createByTrainer(@PathVariable Integer sessionId, @PathVariable Integer trainerId, @RequestBody SessionCommentDto sessionCommentDto) {
         Session session = sessionService.getById(sessionId);
         Trainer trainer = trainerService.getById(trainerId);
-        sessionCommentDto.setSession(sessionMapper.sessionToSessionDto(session));
         sessionCommentDto.setAuthorTrainer(trainerMapper.trainerToTrainerDto(trainer));
         sessionCommentDto.setCreatedAt(LocalDateTime.now());
         SessionComment sessionCommentToCreate = sessionCommentMapper.sessionCommentDtoToSessionComment(sessionCommentDto);
         sessionCommentToCreate.setSession(session);
         sessionCommentToCreate.setAuthorTrainer(trainer);
         session.getComments().add(sessionCommentToCreate);
+        sessionCommentToCreate.setReadByTrainer(trainer);
         SessionComment createdSessionComment = sessionCommentService.createSessionComment(sessionCommentToCreate);
 
-        return sessionCommentMapper.sessionCommentToSessionCommentDto(createdSessionComment);
+        return sessionCommentMapper.sessionCommentToSessionCommentDto(createdSessionComment, true, trainerId);
     }
 
     @GetMapping("/list-by-parent/{sessionId}/{parentId}")
-    public Set<SessionCommentDto> findAllBySessionIdForParent (@PathVariable Integer sessionId, @PathVariable Integer parentId) {
+    public List<SessionCommentDto> findAllBySessionIdForParent(@PathVariable Integer sessionId,
+                                                               @PathVariable Integer parentId,
+                                                               @RequestParam Integer pageNumber,
+                                                               @RequestParam Integer pageSize) {
+        List<SessionComment> sessionComments = sessionCommentService.findBySessionId(sessionId, pageNumber, pageSize);
+        List<SessionCommentDto> sessionCommentDtos = sessionCommentMapper.sessionCommentListToSessionCommentDtoList(sessionComments, false, parentId);
+
         Parent parent = parentService.getById(parentId);
-        Set<SessionComment> sessionComments = sessionCommentService.findAllBySessionId(sessionId);
         sessionComments.forEach(comment -> {
             comment.getReadByParents().add(parent);
             sessionCommentService.save(comment);
         });
-        return sessionCommentMapper.sessionCommentListToSessionCommentDtoList(sessionComments);
+        return sessionCommentDtos;
     }
 
     @PostMapping("/create-by-parent/{sessionId}/{parentId}")
     public SessionCommentDto createByParent(@PathVariable Integer sessionId, @PathVariable Integer parentId, @RequestBody SessionCommentDto sessionCommentDto) {
         Session session = sessionService.getById(sessionId);
         Parent parent = parentService.getById(parentId);
-        sessionCommentDto.setSession(sessionMapper.sessionToSessionDto(session));
         sessionCommentDto.setAuthorParent(parentMapper.parentToParentDto(parent));
         sessionCommentDto.setCreatedAt(LocalDateTime.now());
         SessionComment sessionCommentToCreate = sessionCommentMapper.sessionCommentDtoToSessionComment(sessionCommentDto);
         sessionCommentToCreate.setSession(session);
         sessionCommentToCreate.setAuthorParent(parent);
         session.getComments().add(sessionCommentToCreate);
+        sessionCommentToCreate.setReadByParents(Set.of(parent));
         SessionComment createdSessionComment = sessionCommentService.createSessionComment(sessionCommentToCreate);
 
-        return sessionCommentMapper.sessionCommentToSessionCommentDto(createdSessionComment);
+        return sessionCommentMapper.sessionCommentToSessionCommentDto(createdSessionComment, false, parentId);
+    }
+
+    @PutMapping("/trainer/{sessionCommentId}/{trainerId}")
+    public SessionCommentDto editAsTrainer(@PathVariable Integer sessionCommentId,
+                                           @PathVariable Integer trainerId,
+                                           @RequestBody SessionCommentDto sessionCommentDto) {
+        SessionComment updatedComment = sessionCommentService.update(sessionCommentId, sessionCommentMapper.sessionCommentDtoToSessionComment(sessionCommentDto));
+        return sessionCommentMapper.sessionCommentToSessionCommentDto(updatedComment, true, trainerId);
+    }
+
+    @PutMapping("/parent/{sessionCommentId}/{parentId}")
+    public SessionCommentDto editAsParent(@PathVariable Integer sessionCommentId,
+                                          @PathVariable Integer parentId,
+                                          @RequestBody SessionCommentDto sessionCommentDto) {
+        SessionComment updatedComment = sessionCommentService.update(sessionCommentId, sessionCommentMapper.sessionCommentDtoToSessionComment(sessionCommentDto));
+        return sessionCommentMapper.sessionCommentToSessionCommentDto(updatedComment, false, parentId);
     }
 
     @DeleteMapping("/{id}")

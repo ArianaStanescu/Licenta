@@ -19,7 +19,7 @@ public class Session {
     @Column(name = "end_date_time")
     private LocalDateTime endDateTime;
 
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "TEXT")
     private String note;
 
     @ManyToOne

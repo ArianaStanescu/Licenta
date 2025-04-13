@@ -23,7 +23,6 @@ public class SessionController {
 
     @PostMapping("/create/{groupId}")
     public List<SessionDto> create(@PathVariable Integer groupId) {
-
         List<Session> sessions = sessionService.createSessions(groupId);
 
         return sessions.stream()
@@ -32,20 +31,24 @@ public class SessionController {
     }
 
     @GetMapping("/{id}")
-    public SessionGetDto get(@PathVariable Integer id) {
+    public SessionGetDto get(@PathVariable Integer id,
+                             @RequestParam boolean isTrainer,
+                             @RequestParam Integer userId) {
         Session session = sessionService.getById(id);
-        return sessionMapper.sessionToSessionGetDto(session);
+        return sessionMapper.sessionToSessionGetDto(session, isTrainer, userId);
     }
 
     @GetMapping("/list/{groupId}")
     public List<SessionGetDto> findAllByGroupId(@PathVariable Integer groupId,
                                                 @RequestParam Integer pageNumber,
                                                 @RequestParam Integer pageSize,
+                                                @RequestParam boolean isTrainer,
+                                                @RequestParam Integer userId,
                                                 @RequestParam(required = false) String sortBy,
                                                 @RequestParam(required = false) String sortDirection) {
         List<Session> sessions = sessionService.findAllByGroupId(groupId, pageNumber, pageSize, sortBy, sortDirection);
         return sessions.stream()
-                .map(sessionMapper::sessionToSessionGetDto)
+                .map(session -> sessionMapper.sessionToSessionGetDto(session, isTrainer, userId))
                 .toList();
     }
 

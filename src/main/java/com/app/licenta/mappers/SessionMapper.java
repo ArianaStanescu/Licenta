@@ -23,6 +23,22 @@ public class SessionMapper {
         return session;
     }
 
+    public SessionGetDto sessionToSessionGetDto(Session session, boolean isTrainer, Integer userId) {
+        SessionGetDto sessionGetDto = sessionToSessionGetDto(session);
+        sessionGetDto.setNewComments(false);
+        if (isTrainer) {
+            sessionGetDto.setNewComments(session.getComments().stream()
+                    .anyMatch(comment -> comment.getReadByTrainer() == null ||
+                            !comment.getReadByTrainer().getId().equals(userId)));
+        } else {
+            sessionGetDto.setNewComments(session.getComments().stream()
+                    .anyMatch(comment -> comment.getReadByParents().isEmpty() ||
+                            comment.getReadByParents().stream().noneMatch(parent -> parent.getId().equals(userId))));
+        }
+        return sessionGetDto;
+
+    }
+
     public SessionGetDto sessionToSessionGetDto(Session session) {
         SessionGetDto sessionGetDto = new SessionGetDto();
         sessionGetDto.setId(session.getId());
