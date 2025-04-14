@@ -9,8 +9,8 @@ public class TrainerReviewDTO {
     private TrainerReviewGrade trainerReviewGrade;
     private String comment;
     private LocalDateTime createdAt;
-    private TrainerDto trainerDto;
-    private ParentDto parentDto;
+    private TrainerDto trainer;
+    private ParentDto parent;
 
     public Integer getId() {
         return id;
@@ -44,19 +44,19 @@ public class TrainerReviewDTO {
         this.createdAt = createdAt;
     }
 
-    public TrainerDto getTrainerDto() {
-        return trainerDto;
+    public TrainerDto getTrainer() {
+        return trainer;
     }
 
-    public void setTrainerDto(TrainerDto trainerDto) {
-        this.trainerDto = trainerDto;
+    public void setTrainer(TrainerDto trainer) {
+        this.trainer = trainer;
     }
 
-    public ParentDto getParentDto() {
-        return parentDto;
+    public ParentDto getParent() {
+        return parent;
     }
 
-    public void setParentDto(ParentDto parentDto) {
-        this.parentDto = parentDto;
+    public void setParent(ParentDto parent) {
+        this.parent = parent;
     }
 }

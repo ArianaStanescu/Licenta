@@ -30,8 +30,8 @@ public class TrainerReviewMapper {
         trainerReviewDTO.setId(trainerReview.getId());
         trainerReviewDTO.setComment(trainerReview.getComment());
         trainerReviewDTO.setTrainerReviewGrade(trainerReview.getTrainerReviewGrade());
-        trainerReviewDTO.setParentDto(parentMapper.parentToParentDto(trainerReview.getParent()));
-        trainerReviewDTO.setTrainerDto(trainerMapper.trainerToTrainerDto(trainerReview.getTrainer()));
+        trainerReviewDTO.setParent(parentMapper.parentToParentDto(trainerReview.getParent()));
+        trainerReviewDTO.setTrainer(trainerMapper.trainerToTrainerDto(trainerReview.getTrainer()));
         trainerReviewDTO.setCreatedAt(trainerReview.getCreatedAt());
 
         return trainerReviewDTO;
