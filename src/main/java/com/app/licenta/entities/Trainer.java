@@ -36,11 +36,17 @@ public class Trainer {
     @Column(name = "fcm_token")
     private String fcmToken;
 
+    @Column(name="reviews_grade")
+    private Double reviewsGrade;
+
     @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Activity> activities = new HashSet<>();
 
     @ManyToMany(mappedBy = "favoriteTrainers", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Parent> followersParents = new HashSet<>();
+
+    @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<TrainerReview> trainerReviews = new HashSet<>();
 
 //    @OneToMany(mappedBy = "authorTrainer", cascade = {})
 //    private Set<SessionComment> sessionComments = new HashSet<>();
@@ -138,5 +144,21 @@ public class Trainer {
 
     public void setFollowersParents(Set<Parent> followersParents) {
         this.followersParents = followersParents;
+    }
+
+    public Set<TrainerReview> getTrainerReviews() {
+        return trainerReviews;
+    }
+
+    public void setTrainerReviews(Set<TrainerReview> trainerReviews) {
+        this.trainerReviews = trainerReviews;
+    }
+
+    public Double getReviewsGrade() {
+        return reviewsGrade;
+    }
+
+    public void setReviewsGrade(Double reviewsGrade) {
+        this.reviewsGrade = reviewsGrade;
     }
 }

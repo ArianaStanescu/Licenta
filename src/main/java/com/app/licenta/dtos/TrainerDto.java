@@ -12,6 +12,7 @@ public class TrainerDto {
     private String phoneNumber;
     private Gender gender;
     private LocalDate birthDate;
+    private Double reviewGrade;
 
     public Integer getId() {
         return id;
@@ -69,4 +70,11 @@ public class TrainerDto {
         this.birthDate = birthDate;
     }
 
+    public Double getReviewGrade() {
+        return reviewGrade;
+    }
+
+    public void setReviewGrade(Double reviewGrade) {
+        this.reviewGrade = reviewGrade;
+    }
 }
