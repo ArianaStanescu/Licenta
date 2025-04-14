@@ -33,7 +33,7 @@ public class SessionCommentMapper {
         sessionCommentDto.setContent(sessionComment.getContent());
         sessionCommentDto.setCreatedAt(sessionComment.getCreatedAt());
         if (sessionComment.getAuthorParent() != null) {
-            sessionCommentDto.setAuthorParent(parentMapper.parentToParentDto(sessionComment.getAuthorParent()));
+            sessionCommentDto.setAuthorParent(parentMapper.parentToParentWithChildrenDto(sessionComment.getAuthorParent(), sessionComment.getSession().getGroup().getChildren().stream().toList()));
         } else {
             sessionCommentDto.setAuthorTrainer(trainerMapper.trainerToTrainerDto(sessionComment.getAuthorTrainer()));
         }

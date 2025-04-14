@@ -1,6 +1,8 @@
 package com.app.licenta.mappers;
 
 import com.app.licenta.dtos.ParentDto;
+import com.app.licenta.dtos.ParentWithChildrenDto;
+import com.app.licenta.entities.Child;
 import com.app.licenta.entities.Parent;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,22 @@ public class ParentMapper {
         parentDto.setEmail(parent.getEmail());
         parentDto.setPhoneNumber(parent.getPhoneNumber());
         parentDto.setGender(parent.getGender());
+        return parentDto;
+    }
+
+    public ParentWithChildrenDto parentToParentWithChildrenDto(Parent parent, List<Child> childrenInGroup) {
+        ParentWithChildrenDto parentDto = new ParentWithChildrenDto();
+        parentDto.setId(parent.getId());
+        parentDto.setFirstName(parent.getFirstName());
+        parentDto.setLastName(parent.getLastName());
+        parentDto.setEmail(parent.getEmail());
+        parentDto.setPhoneNumber(parent.getPhoneNumber());
+        parentDto.setGender(parent.getGender());
+        parentDto.setChildren(parent.getChildren().stream()
+                .filter(child -> childrenInGroup.stream()
+                        .anyMatch(childInGroup -> childInGroup.getId().equals(child.getId())))
+                .map(Child::getFirstName)
+                .toList());
         return parentDto;
     }
 

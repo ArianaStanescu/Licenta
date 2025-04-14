@@ -90,7 +90,7 @@ public class SessionCommentController {
     public SessionCommentDto createByParent(@PathVariable Integer sessionId, @PathVariable Integer parentId, @RequestBody SessionCommentDto sessionCommentDto) {
         Session session = sessionService.getById(sessionId);
         Parent parent = parentService.getById(parentId);
-        sessionCommentDto.setAuthorParent(parentMapper.parentToParentDto(parent));
+        sessionCommentDto.setAuthorParent(parentMapper.parentToParentWithChildrenDto(parent, session.getGroup().getChildren().stream().toList()));
         sessionCommentDto.setCreatedAt(LocalDateTime.now());
         SessionComment sessionCommentToCreate = sessionCommentMapper.sessionCommentDtoToSessionComment(sessionCommentDto);
         sessionCommentToCreate.setSession(session);

@@ -6,7 +6,7 @@ public class SessionCommentDto {
     private Integer id;
     private String content;
     private LocalDateTime createdAt;
-    private ParentDto authorParent;
+    private ParentWithChildrenDto authorParent;
     private TrainerDto authorTrainer;
     private boolean read;
 
@@ -35,11 +35,11 @@ public class SessionCommentDto {
         this.createdAt = createdAt;
     }
 
-    public ParentDto getAuthorParent() {
+    public ParentWithChildrenDto getAuthorParent() {
         return authorParent;
     }
 
-    public void setAuthorParent(ParentDto authorParent) {
+    public void setAuthorParent(ParentWithChildrenDto authorParent) {
         this.authorParent = authorParent;
     }
 
