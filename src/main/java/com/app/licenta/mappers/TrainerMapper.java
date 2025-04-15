@@ -4,8 +4,6 @@ import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Trainer;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
-
 @Component
 public class TrainerMapper {
 
@@ -30,6 +28,7 @@ public class TrainerMapper {
         trainerDto.setPhoneNumber(trainer.getPhoneNumber());
         trainerDto.setGender(trainer.getGender());
         trainerDto.setBirthDate(trainer.getBirthDate());
+        trainerDto.setReviewGrade(trainer.getReviewsGrade());
         return trainerDto;
     }
 }

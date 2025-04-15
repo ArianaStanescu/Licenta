@@ -42,6 +42,9 @@ public class Parent {
     )
     private Set<Trainer> favoriteTrainers = new HashSet<>();
 
+    @OneToMany(mappedBy = "parent", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<TrainerReview> trainerReviews = new HashSet<>();
+
     public Integer getId() {
         return id;
     }
@@ -112,5 +115,13 @@ public class Parent {
 
     public void setFavoriteTrainers(Set<Trainer> favoriteTrainers) {
         this.favoriteTrainers = favoriteTrainers;
+    }
+
+    public Set<TrainerReview> getTrainerReviews() {
+        return trainerReviews;
+    }
+
+    public void setTrainerReviews(Set<TrainerReview> trainerReviews) {
+        this.trainerReviews = trainerReviews;
     }
 }

@@ -2,9 +2,13 @@ package com.app.licenta.services;
 
 import com.app.licenta.entities.Parent;
 import com.app.licenta.entities.Trainer;
+import com.app.licenta.entities.TrainerReview;
+import com.app.licenta.entities.TrainerReviewGrade;
 import com.app.licenta.repositories.TrainerRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,6 +65,18 @@ public class TrainerService {
         } else {
             throw new EntityNotFoundException("Trainer with id " + id + " not found");
         }
+    }
 
+    @Async
+    @Transactional
+    public void updateTrainerReviews(Integer trainerId) {
+        Trainer trainer = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + trainerId + " not found"));
+
+        double sum = trainer.getTrainerReviews().stream().map(TrainerReview::getTrainerReviewGrade)
+                .mapToInt(TrainerReviewGrade::getGrade)
+                .sum();
+        trainer.setReviewsGrade(sum / trainer.getTrainerReviews().size());
+        trainerRepository.save(trainer);
     }
 }

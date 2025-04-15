@@ -2,17 +2,17 @@ package com.app.licenta.dtos;
 
 import com.app.licenta.entities.Gender;
 
-import java.time.LocalDate;
+import java.util.List;
 
-public class TrainerDto {
+
+public class ParentWithChildrenDto {
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private Gender gender;
-    private LocalDate birthDate;
-    private Double reviewGrade;
+    private List<String> children;
 
     public Integer getId() {
         return id;
@@ -62,19 +62,11 @@ public class TrainerDto {
         this.gender = gender;
     }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
+    public List<String> getChildren() {
+        return children;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Double getReviewGrade() {
-        return reviewGrade;
-    }
-
-    public void setReviewGrade(Double reviewGrade) {
-        this.reviewGrade = reviewGrade;
+    public void setChildren(List<String> children) {
+        this.children = children;
     }
 }
