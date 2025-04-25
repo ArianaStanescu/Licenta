@@ -1,13 +1,10 @@
 package com.app.licenta.controllers;
 
 import com.app.licenta.dtos.*;
-import com.app.licenta.entities.Ad;
-import com.app.licenta.entities.Child;
 import com.app.licenta.entities.EnrollmentRequest;
 import com.app.licenta.entities.EnrollmentStatus;
 import com.app.licenta.mappers.EnrollmentRequestMapper;
-import com.app.licenta.services.AdService;
-import com.app.licenta.services.ChildService;
+import com.app.licenta.notifications.FirebaseNotificationSender;
 import com.app.licenta.services.EnrollmentRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +18,8 @@ public class EnrollmentRequestController {
     private EnrollmentRequestService enrollmentRequestService;
     @Autowired
     private EnrollmentRequestMapper enrollmentRequestMapper;
+    @Autowired
+    private FirebaseNotificationSender firebaseNotificationSender;
 
     @PostMapping("/create/{adId}/{childId}")
     public EnrollmentRequestDto create(@PathVariable Integer adId, @PathVariable Integer childId) {
@@ -44,24 +43,17 @@ public class EnrollmentRequestController {
         return enrollmentRequestMapper.enrollmentRequestListToEnrollmentRequestDtoList(enrollmentRequestService.findAllByChildId(childId));
     }
 
-//    @PostMapping("/create/{adId}/{childId}")
-//    public EnrollmentRequestCreateDto create(@PathVariable Integer adId, @PathVariable Integer childId) {
-//        Ad ad = adService.getById(adId);
-//        Child child = childService.getById(childId);
-//        EnrollmentRequest enrollmentRequestToCreate = new EnrollmentRequest();
-//        enrollmentRequestToCreate.setAd(ad);
-//        enrollmentRequestToCreate.setChild(child);
-//        enrollmentRequestToCreate.setStatus(EnrollmentStatus.PENDING);
-//        ad.getEnrollmentRequests().add(enrollmentRequestToCreate);
-//        child.getEnrollmentRequests().add(enrollmentRequestToCreate);
-//        EnrollmentRequest createdEnrollmentRequest = enrollmentRequestService.createEnrollmentRequest(enrollmentRequestToCreate);
-//
-//        return enrollmentRequestMapper.enrollmentRequestToEnrollmentRequestCreateDto(createdEnrollmentRequest);
-//    }
 
     @PutMapping("/{id}")
     public EnrollmentRequestUpdateDto update(@RequestBody EnrollmentRequestUpdateDto enrollmentRequestUpdateDto, @PathVariable Integer id) {
-        return enrollmentRequestMapper.enrollmentRequestToEnrollmentRequestUpdateDto(enrollmentRequestService.update(id, enrollmentRequestMapper.enrollemntRequestUpdateDtoToEnrollmentRequest(enrollmentRequestUpdateDto)));
+        EnrollmentRequest updateER = enrollmentRequestService.update(id, enrollmentRequestMapper.enrollemntRequestUpdateDtoToEnrollmentRequest(enrollmentRequestUpdateDto));
+
+        if (updateER.getStatus() == EnrollmentStatus.APPROVED) {
+            firebaseNotificationSender.sendNotificationForApprovedEnReq(updateER.getChild().getParent().getId(), updateER.getChild().getFullName(), updateER.getAd().getTitle());
+        } else if (updateER.getStatus() == EnrollmentStatus.REJECTED) {
+            firebaseNotificationSender.sendNotificationForRejectedEnReq(updateER.getChild().getParent().getId(), updateER.getChild().getFullName(), updateER.getAd().getTitle());
+        }
+        return enrollmentRequestMapper.enrollmentRequestToEnrollmentRequestUpdateDto(updateER);
     }
 
 

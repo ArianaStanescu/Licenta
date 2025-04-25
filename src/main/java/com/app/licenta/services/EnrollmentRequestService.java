@@ -4,6 +4,7 @@ package com.app.licenta.services;
 import com.app.licenta.entities.*;
 import com.app.licenta.repositories.EnrollmentRequestRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,8 @@ public class EnrollmentRequestService {
     @Autowired
     private ChildService childService;
 
+    @Transactional
     public EnrollmentRequest createEnrollmentRequest(Integer adId, Integer childId) {
-
         Ad ad = adService.getById(adId);
         Child child = childService.getById(childId);
 
@@ -31,7 +32,10 @@ public class EnrollmentRequestService {
             throw new IllegalStateException("Copilul este deja înscris la acest anunț.");
         }
 
-        if(ad.getEnrollmentRequests().size() > ad.getTotalSpots()) {
+        long validEnrollmentRequests = ad.getEnrollmentRequests().stream()
+                .filter(er -> er.getStatus() == EnrollmentStatus.PENDING || er.getStatus() == EnrollmentStatus.APPROVED)
+                .count();
+        if(validEnrollmentRequests == ad.getTotalSpots()) {
             throw new IllegalStateException("Nu mai există locuri disponibile.");
         }
 
@@ -43,12 +47,12 @@ public class EnrollmentRequestService {
         ad.getEnrollmentRequests().add(enrollmentRequest);
         child.getEnrollmentRequests().add(enrollmentRequest);
 
-        if(ad.getEnrollmentRequests().size() == ad.getTotalSpots()) {
+        if (validEnrollmentRequests + 1 == ad.getTotalSpots()) {
             ad.setStatus(AdStatus.PENDING);
-            adService.update(ad.getId(), ad);
         }
+        enrollmentRequestRepository.save(enrollmentRequest);
 
-        return enrollmentRequestRepository.save(enrollmentRequest);
+        return enrollmentRequest;
     }
 
     public EnrollmentRequest getById(Integer id) {
@@ -64,11 +68,16 @@ public class EnrollmentRequestService {
         return enrollmentRequestRepository.findAllByChildId(childId);
     }
 
+    @Transactional
     public EnrollmentRequest update(Integer id, EnrollmentRequest enrollmentRequest) {
         EnrollmentRequest enrollmentRequestToUpdate = enrollmentRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Enrollment request with id " + id + " not found"));
         enrollmentRequestToUpdate.setStatus(enrollmentRequest.getStatus());
         enrollmentRequestRepository.save(enrollmentRequestToUpdate);
+        if (enrollmentRequest.getStatus() == EnrollmentStatus.REJECTED ||
+                enrollmentRequest.getStatus() == EnrollmentStatus.CANCELED) {
+            enrollmentRequestToUpdate.getAd().setStatus(AdStatus.ACTIVE);
+        }
         return enrollmentRequestToUpdate;
     }
 }

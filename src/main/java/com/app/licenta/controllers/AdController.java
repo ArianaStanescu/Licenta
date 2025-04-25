@@ -7,6 +7,7 @@ import com.app.licenta.entities.*;
 import com.app.licenta.mappers.AdMapper;
 import com.app.licenta.notifications.FirebaseNotificationSender;
 import com.app.licenta.services.AdService;
+import com.app.licenta.services.EnrollmentRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,16 +21,14 @@ import java.util.Set;
 @RestController
 @RequestMapping("/ads")
 public class AdController {
-
     @Autowired
     private AdService adService;
-
     @Autowired
     private AdMapper adMapper;
-
+    @Autowired
+    private EnrollmentRequestService enrollmentRequestService;
     @Autowired
     private EmailService emailService;
-
     @Autowired
     private FirebaseNotificationSender firebaseNotificationSender;
 
@@ -85,10 +84,18 @@ public class AdController {
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false) String sortDirection) {
 
-        return adService.searchAdsByTrainerId(trainerId, title, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageNumber, pageSize, sortBy, sortDirection)
+        List<AdDto> ads = adService.searchAdsByTrainerId(trainerId, title, category, minAge, maxAge, gender, minPrice, maxPrice, status, pageNumber, pageSize, sortBy, sortDirection)
                 .stream()
                 .map(adMapper::adToAdDto)
                 .toList();
+        for (AdDto ad : ads) {
+            int pendingEnReqCount = enrollmentRequestService.findAllByAdId(ad.getId())
+                    .stream()
+                    .filter(er -> er.getStatus() == EnrollmentStatus.PENDING).toList().size();
+            ad.setPendingEnrollmentRequestsCount(pendingEnReqCount);
+        }
+
+        return ads;
     }
 
     @PostMapping("/create/{activityId}")
