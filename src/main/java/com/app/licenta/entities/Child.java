@@ -67,6 +67,11 @@ public class Child {
         this.lastName = lastName;
     }
 
+    @Transient
+    public String getFullName() {
+        return getFirstName() + " " + getLastName();
+    }
+
     public Gender getGender() {
         return gender;
     }

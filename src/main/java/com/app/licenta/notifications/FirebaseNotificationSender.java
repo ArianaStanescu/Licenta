@@ -33,6 +33,16 @@ public class FirebaseNotificationSender {
     }
 
     @Async
+    public void sendNotificationForApprovedEnReq(Integer parentId, String childName, String adTitle) {
+        sendNotificationForParent(parentId, ENROLLMENT_REQUEST_APPROVED_TITLE, ENROLLMENT_REQUEST_APPROVED_BODY.formatted(childName,adTitle));
+    }
+
+    @Async
+    public void sendNotificationForRejectedEnReq(Integer parentId, String childName, String adTitle) {
+        sendNotificationForParent(parentId, ENROLLMENT_REQUEST_REJECTED_TITLE, ENROLLMENT_REQUEST_REJECTED_BODY.formatted(childName, adTitle));
+    }
+
+    @Async
     public void sendNotificationForNewlyCreatedAd(Integer parentId, String trainerName) {
         sendNotificationForParent(parentId, NEW_AD_CREATED_TITLE, NEW_AD_CREATED_BODY.formatted(trainerName));
     }

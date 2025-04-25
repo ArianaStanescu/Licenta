@@ -19,6 +19,7 @@ public class AdDto {
     private LocalDate endDate;
     private AdStatus status;
     private Integer totalSpots;
+    private Integer pendingEnrollmentRequestsCount;
     private Set<DurationRule> durationRules = new HashSet<>();
     private ActivityDto activity;
 
@@ -124,6 +125,14 @@ public class AdDto {
 
     public void setDurationRules(Set<DurationRule> durationRules) {
         this.durationRules = durationRules;
+    }
+
+    public Integer getPendingEnrollmentRequestsCount() {
+        return pendingEnrollmentRequestsCount;
+    }
+
+    public void setPendingEnrollmentRequestsCount(Integer pendingEnrollmentRequestsCount) {
+        this.pendingEnrollmentRequestsCount = pendingEnrollmentRequestsCount;
     }
 
     public ActivityDto getActivity() {

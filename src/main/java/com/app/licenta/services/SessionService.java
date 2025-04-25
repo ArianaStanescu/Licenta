@@ -57,7 +57,7 @@ public class SessionService {
         while (localDate.isBefore(endDate)) {
             LocalDate currentDate = localDate;
             DurationRule foundRule = durationRules.stream().filter(durationRule ->
-                    durationRule.getDay().ordinal() + 1 == currentDate.getDayOfWeek().ordinal())
+                    durationRule.getDay().ordinal() == currentDate.getDayOfWeek().ordinal())
                     .findFirst()
                     .orElse(null);
 
