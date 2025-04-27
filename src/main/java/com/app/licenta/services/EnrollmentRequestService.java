@@ -6,8 +6,13 @@ import com.app.licenta.repositories.EnrollmentRequestRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -66,6 +71,17 @@ public class EnrollmentRequestService {
 
     public Set<EnrollmentRequest> findAllByChildId(Integer childId) {
         return enrollmentRequestRepository.findAllByChildId(childId);
+    }
+
+    public List<EnrollmentRequest> findAllByParentIdForActiveAds(Integer parentId, int pageNumber, int pageSize, String sortBy, String sortDirection) {
+        Sort.Direction direction = Optional.ofNullable(sortDirection)
+                .map(Sort.Direction::fromString)
+                .orElse(Sort.Direction.DESC);
+        Sort sort = Optional.ofNullable(sortBy)
+                .map(s -> Sort.by(direction, s))
+                .orElse(Sort.by(direction, "id"));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return enrollmentRequestRepository.findAllByParentId(parentId, pageable).getContent();
     }
 
     @Transactional

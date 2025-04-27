@@ -85,7 +85,7 @@ public class ParentController {
 
     @GetMapping("/send-notification/{parentId}")
     public void sendNotification(@PathVariable Integer parentId) {
-        firebaseNotificationSender.sendNotificationForParent(parentId, "Notification title", "Notification body");
+        firebaseNotificationSender.sendNotificationForParent(parentId, "Notification title", "Notification body ");
     }
 
     @DeleteMapping("/{id}")
