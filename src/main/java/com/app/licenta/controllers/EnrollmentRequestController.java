@@ -9,6 +9,7 @@ import com.app.licenta.services.EnrollmentRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -35,12 +36,22 @@ public class EnrollmentRequestController {
 
     @GetMapping("/list-by-ad/{adId}")
     public Set<EnrollmentRequestDto> findAllByAdId(@PathVariable Integer adId) {
-        return enrollmentRequestMapper.enrollmentRequestListToEnrollmentRequestDtoList(enrollmentRequestService.findAllByAdId(adId));
+        return enrollmentRequestMapper.enrollmentRequestSetToEnrollmentRequestDtoSet(enrollmentRequestService.findAllByAdId(adId));
     }
 
     @GetMapping("/list-by-child/{childId}")
     public Set<EnrollmentRequestDto> findAllByChildId(@PathVariable Integer childId) {
-        return enrollmentRequestMapper.enrollmentRequestListToEnrollmentRequestDtoList(enrollmentRequestService.findAllByChildId(childId));
+        return enrollmentRequestMapper.enrollmentRequestSetToEnrollmentRequestDtoSet(enrollmentRequestService.findAllByChildId(childId));
+    }
+
+    @GetMapping("/list-by-parent/{parentId}")
+    public List<EnrollmentRequestDto> findAllByParentIdForActiveAds(@PathVariable Integer parentId,
+                                                        @RequestParam() int pageNumber,
+                                                        @RequestParam() int pageSize,
+                                                        @RequestParam(required = false) String sortBy,
+                                                        @RequestParam(required = false) String sortDirection) {
+        return enrollmentRequestMapper.enrollmentRequestListToEnrollmentRequestDtoList(
+                enrollmentRequestService.findAllByParentIdForActiveAds(parentId, pageNumber, pageSize, sortBy, sortDirection));
     }
 
 

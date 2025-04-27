@@ -6,31 +6,16 @@ import com.app.licenta.entities.EnrollmentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class EnrollmentRequestMapper {
-
     @Autowired
     private AdMapper adMapper;
-
     @Autowired
     private ChildMapper childMapper;
-
-//    public EnrollmentRequestCreateDto enrollmentRequestToEnrollmentRequestCreateDto(EnrollmentRequest enrollmentRequest) {
-//        EnrollmentRequestCreateDto dto = new EnrollmentRequestCreateDto();
-//        dto.setId(enrollmentRequest.getId());
-//        dto.setStatus(enrollmentRequest.getStatus());
-//        return dto;
-//    }
-//
-//    public EnrollmentRequest enrollmentRequestDtoToEnrollmentRequest(EnrollmentRequestCreateDto enrollmentRequestCreateDto) {
-//        EnrollmentRequest enrollmentRequest = new EnrollmentRequest();
-//        //enrollmentRequest.setId(dto.getId());
-//        enrollmentRequest.setStatus(enrollmentRequestCreateDto.getStatus());
-//        return enrollmentRequest;
-//    }
 
     public EnrollmentRequestDto enrollmentRequestToEnrollmentRequestDto(EnrollmentRequest enrollmentRequest) {
         EnrollmentRequestDto enrollmentRequestDto = new EnrollmentRequestDto();
@@ -41,8 +26,12 @@ public class EnrollmentRequestMapper {
         return enrollmentRequestDto;
     }
 
-    public Set<EnrollmentRequestDto> enrollmentRequestListToEnrollmentRequestDtoList (Set<EnrollmentRequest> enrollmentRequestList) {
+    public Set<EnrollmentRequestDto> enrollmentRequestSetToEnrollmentRequestDtoSet(Set<EnrollmentRequest> enrollmentRequestList) {
         return enrollmentRequestList.stream().map(this::enrollmentRequestToEnrollmentRequestDto).collect(Collectors.toSet());
+    }
+
+    public List<EnrollmentRequestDto> enrollmentRequestListToEnrollmentRequestDtoList(List<EnrollmentRequest> enrollmentRequestList) {
+        return enrollmentRequestList.stream().map(this::enrollmentRequestToEnrollmentRequestDto).collect(Collectors.toList());
     }
 
     public EnrollmentRequest enrollemntRequestUpdateDtoToEnrollmentRequest(EnrollmentRequestUpdateDto enrollmentRequestUpdateDto) {
