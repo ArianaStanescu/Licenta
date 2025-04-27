@@ -13,6 +13,8 @@ public class EmailNotificationMessages {
     public static final String ENROLLMENT_REQUEST_REJECTED_TITLE = "Cererea de înscriere a fost respinsă!";
     public static final String ENROLLMENT_REQUEST_REJECTED_BODY = "Cererea de înscriere a copilului %s la anunțul %s a fost respinsă! \n" +
             "Poți verifica în aplicație!";
+    public static final String GROUP_COMPLETED_DIPLOMA_TITLE = "Diplomă de participare pentru copilul dumneavoastră: %s";
+    public static final String GROUP_COMPLETED_DIPLOMA_BODY = "Felicitări! Ați primit o diplomă de participare pentru copilul dumneavoastră, %s, pentru activitatea pe care a finalizat-o: %s.\n\nDescarcă atașamentul pentru a revendica diploma. \n";
 
     private EmailNotificationMessages() {
 
