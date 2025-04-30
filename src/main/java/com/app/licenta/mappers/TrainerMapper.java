@@ -4,6 +4,7 @@ import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Trainer;
 import org.springframework.stereotype.Component;
 
+import java.util.Locale;
 import java.util.Optional;
 
 @Component
@@ -32,7 +33,7 @@ public class TrainerMapper {
         trainerDto.setDescription(trainer.getDescription());
         trainerDto.setGender(trainer.getGender());
         trainerDto.setBirthDate(trainer.getBirthDate());
-        trainerDto.setReviewGrade(Optional.ofNullable(trainer.getReviewsGrade()).map(grade -> Double.parseDouble(String.format("%.2f", grade))).orElse(null));
+        trainerDto.setReviewGrade(Optional.ofNullable(trainer.getReviewsGrade()).map(grade -> Double.parseDouble(String.format(Locale.US, "%.2f", grade))).orElse(null));
         return trainerDto;
     }
 }
