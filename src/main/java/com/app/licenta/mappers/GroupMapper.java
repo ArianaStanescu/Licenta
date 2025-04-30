@@ -20,16 +20,14 @@ public class GroupMapper {
 
     public Group groupDtoToGroup(GroupDto groupDto) {
         Group group = new Group();
-        //group.setId(groupDto.getId());
         group.setTitle(groupDto.getTitle());
         group.setDescription(groupDto.getDescription());
         group.setChildrenCount(groupDto.getChildrenCount());
         group.setMinAge(groupDto.getMinAge());
         group.setMaxAge(groupDto.getMaxAge());
         group.setGender(groupDto.getGender());
+        group.setLocation(groupDto.getLocation());
         group.setStatus(groupDto.getStatus());
-        group.setDurationRules(groupDto.getDurationRules());
-        group.setActivity(activityMapper.activityDtoToActivity(groupDto.getActivity()));
         return group;
     }
 
@@ -44,6 +42,7 @@ public class GroupMapper {
         groupDto.setGender(group.getGender());
         groupDto.setStatus(group.getStatus());
         groupDto.setDurationRules(group.getDurationRules());
+        groupDto.setLocation(group.getLocation());
         groupDto.setActivity(activityMapper.activityToActivityDto(group.getActivity()));
         return groupDto;
     }
@@ -63,6 +62,7 @@ public class GroupMapper {
         groupGetDto.setGender(group.getGender());
         groupGetDto.setStatus(group.getStatus());
         groupGetDto.setDurationRules(group.getDurationRules());
+        groupGetDto.setLocation(group.getLocation());
         groupGetDto.setActivity(activityMapper.activityToActivityDto(group.getActivity()));
         groupGetDto.setChildren(group.getChildren().stream().map(child -> childMapper.childToChildDto(child)).collect(Collectors.toSet()));
         return groupGetDto;

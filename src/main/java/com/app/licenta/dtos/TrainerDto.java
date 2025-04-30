@@ -10,6 +10,7 @@ public class TrainerDto {
     private String lastName;
     private String email;
     private String phoneNumber;
+    private String description;
     private Gender gender;
     private LocalDate birthDate;
     private Double reviewGrade;
@@ -52,6 +53,14 @@ public class TrainerDto {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Gender getGender() {

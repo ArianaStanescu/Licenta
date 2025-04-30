@@ -124,6 +124,7 @@ public class AdService {
         adToUpdate.setEndDate(ad.getEndDate());
         adToUpdate.setStatus(ad.getStatus());
         adToUpdate.setTotalSpots(ad.getTotalSpots());
+        adToUpdate.setLocation(ad.getLocation());
 
         adRepository.save(adToUpdate);
         return adToUpdate;

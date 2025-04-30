@@ -38,6 +38,9 @@ public class Group {
     @Enumerated(EnumType.STRING)
     private ChildrenGroupStatus status;
 
+    @Column(name = "location")
+    private String location;
+
     @ManyToOne
     @JoinColumn(name = "ad_id")
     private Ad ad;
@@ -123,6 +126,14 @@ public class Group {
 
     public void setStatus(ChildrenGroupStatus status) {
         this.status = status;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Ad getAd() {

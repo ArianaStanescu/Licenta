@@ -16,6 +16,7 @@ public class GroupDto {
     private Integer maxAge;
     private Gender gender;
     private ChildrenGroupStatus status;
+    private String location;
     private Set<DurationRule> durationRules = new HashSet<>();
     private ActivityDto activity;
 
@@ -81,6 +82,14 @@ public class GroupDto {
 
     public void setStatus(ChildrenGroupStatus status) {
         this.status = status;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Set<DurationRule> getDurationRules() {

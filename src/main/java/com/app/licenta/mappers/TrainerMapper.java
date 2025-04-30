@@ -4,6 +4,8 @@ import com.app.licenta.dtos.TrainerDto;
 import com.app.licenta.entities.Trainer;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class TrainerMapper {
 
@@ -14,6 +16,7 @@ public class TrainerMapper {
         trainer.setLastName(trainerDto.getLastName());
         trainer.setEmail(trainerDto.getEmail());
         trainer.setPhoneNumber(trainerDto.getPhoneNumber());
+        trainer.setDescription(trainerDto.getDescription());
         trainer.setGender(trainerDto.getGender());
         trainer.setBirthDate(trainerDto.getBirthDate());
         return trainer;
@@ -26,9 +29,10 @@ public class TrainerMapper {
         trainerDto.setLastName(trainer.getLastName());
         trainerDto.setEmail(trainer.getEmail());
         trainerDto.setPhoneNumber(trainer.getPhoneNumber());
+        trainerDto.setDescription(trainer.getDescription());
         trainerDto.setGender(trainer.getGender());
         trainerDto.setBirthDate(trainer.getBirthDate());
-        trainerDto.setReviewGrade(trainer.getReviewsGrade());
+        trainerDto.setReviewGrade(Optional.ofNullable(trainer.getReviewsGrade()).map(grade -> Double.parseDouble(String.format("%.2f", grade))).orElse(null));
         return trainerDto;
     }
 }

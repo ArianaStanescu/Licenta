@@ -52,6 +52,9 @@ public class Ad {
     @Column(name = "total_spots")
     private Integer totalSpots;
 
+    @Column(name = "location")
+    private String location;
+
     @Column(name = "duration_rules")
     @JdbcTypeCode(JSON)
     private Set<DurationRule> durationRules = new HashSet<>();
@@ -160,6 +163,14 @@ public class Ad {
 
     public void setTotalSpots(Integer totalSpots) {
         this.totalSpots = totalSpots;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Set<DurationRule> getDurationRules() {

@@ -40,7 +40,7 @@ public class EnrollmentRequestService {
         long validEnrollmentRequests = ad.getEnrollmentRequests().stream()
                 .filter(er -> er.getStatus() == EnrollmentStatus.PENDING || er.getStatus() == EnrollmentStatus.APPROVED)
                 .count();
-        if(validEnrollmentRequests == ad.getTotalSpots()) {
+        if (validEnrollmentRequests == ad.getTotalSpots()) {
             throw new IllegalStateException("Nu mai există locuri disponibile.");
         }
 

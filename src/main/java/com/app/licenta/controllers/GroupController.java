@@ -3,7 +3,6 @@ package com.app.licenta.controllers;
 import com.app.licenta.dtos.GroupDto;
 import com.app.licenta.dtos.GroupGetDto;
 import com.app.licenta.emails.EmailService;
-import com.app.licenta.entities.Child;
 import com.app.licenta.entities.Group;
 import com.app.licenta.mappers.GroupMapper;
 import com.app.licenta.notifications.FirebaseNotificationSender;
@@ -58,13 +57,12 @@ public class GroupController {
         return groupMapper.groupToGroupDto(createdGroup);
     }
 
-//    @PutMapping("/update/{groupId}")
-//    public GroupDto update(@PathVariable Integer groupId, @RequestBody GroupDto groupDto) {
-//        Group group = groupMapper.groupDtoToGroup(groupDto);
-//        Group updatedGroup = groupService.update(groupId, groupDto);
-//        return groupMapper.groupToGroupDto(updatedGroup);
-//    }
-
+    @PutMapping("/update/{groupId}")
+    public GroupDto update(@PathVariable Integer groupId, @RequestBody GroupDto groupDto) {
+        Group groupToUpdate = groupMapper.groupDtoToGroup(groupDto);
+        Group updatedGroup = groupService.update(groupId, groupToUpdate);
+        return groupMapper.groupToGroupDto(updatedGroup);
+    }
 
     @PutMapping("/add-child/{groupId}/{childId}")
     public GroupDto addChildToGroup(@PathVariable Integer groupId, @PathVariable Integer childId) {
