@@ -7,6 +7,9 @@ import com.app.licenta.notifications.FirebaseNotificationSender;
 import com.app.licenta.services.TrainerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/trainers")
@@ -33,9 +36,10 @@ public class TrainerController {
     }
 
     @PostMapping("/register")
-    public TrainerDto create(@RequestBody TrainerDto trainerDto) {
+    public TrainerDto create(@RequestPart("trainer") TrainerDto trainerDto,
+                             @RequestPart("image") MultipartFile imageFile) throws IOException {
         Trainer trainerToCreate = trainerMapper.trainerDtoToTrainer(trainerDto);
-        Trainer createdTrainer = trainerService.createTrainer(trainerToCreate);
+        Trainer createdTrainer = trainerService.createTrainer(trainerToCreate, imageFile.getBytes());
         return trainerMapper.trainerToTrainerDto(createdTrainer);
     }
 

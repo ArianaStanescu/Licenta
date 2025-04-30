@@ -18,6 +18,7 @@ public class AdDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private AdStatus status;
+    private String location;
     private Integer totalSpots;
     private Integer pendingEnrollmentRequestsCount;
     private Set<DurationRule> durationRules = new HashSet<>();
@@ -109,6 +110,14 @@ public class AdDto {
 
     public void setStatus(AdStatus status) {
         this.status = status;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Integer getTotalSpots() {

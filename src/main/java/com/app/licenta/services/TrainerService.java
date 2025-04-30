@@ -1,9 +1,6 @@
 package com.app.licenta.services;
 
-import com.app.licenta.entities.Parent;
-import com.app.licenta.entities.Trainer;
-import com.app.licenta.entities.TrainerReview;
-import com.app.licenta.entities.TrainerReviewGrade;
+import com.app.licenta.entities.*;
 import com.app.licenta.repositories.TrainerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -19,7 +16,11 @@ public class TrainerService {
     @Autowired
     private TrainerRepository trainerRepository;
 
-    public Trainer createTrainer(Trainer trainer) {
+    public Trainer createTrainer(Trainer trainer, byte[] imageData) {
+        TrainerImage trainerImage = new TrainerImage();
+        trainerImage.setImageData(imageData);
+        trainer.setImage(trainerImage);
+        trainerImage.setTrainer(trainer);
         return trainerRepository.save(trainer);
     }
 

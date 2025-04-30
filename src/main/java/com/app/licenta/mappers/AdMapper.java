@@ -28,6 +28,7 @@ public class AdMapper {
         ad.setStartDate(adDto.getStartDate());
         ad.setEndDate(adDto.getEndDate());
         ad.setStatus(adDto.getStatus());
+        ad.setLocation(adDto.getLocation());
         ad.setTotalSpots(adDto.getTotalSpots());
         ad.setDurationRules(adDto.getDurationRules());
         return ad;
@@ -47,6 +48,7 @@ public class AdMapper {
         adDto.setEndDate(ad.getEndDate());
         adDto.setStatus(ad.getStatus());
         adDto.setTotalSpots(ad.getTotalSpots());
+        adDto.setLocation(ad.getLocation());
         adDto.setDurationRules(ad.getDurationRules());
         adDto.setActivity(activityMapper.activityToActivityDto(ad.getActivity()));
         return adDto;
@@ -68,6 +70,7 @@ public class AdMapper {
         ad.setStartDate(adUpdateDto.getStartDate());
         ad.setEndDate(adUpdateDto.getEndDate());
         ad.setStatus(adUpdateDto.getStatus());
+        ad.setLocation(adUpdateDto.getLocation());
         ad.setTotalSpots(adUpdateDto.getTotalSpots());
         ad.setDurationRules(adUpdateDto.getDurationRules());
         return ad;
@@ -87,6 +90,7 @@ public class AdMapper {
         adUpdateDto.setEndDate(ad.getEndDate());
         adUpdateDto.setStatus(ad.getStatus());
         adUpdateDto.setTotalSpots(ad.getTotalSpots());
+        adUpdateDto.setLocation(ad.getLocation());
         adUpdateDto.setDurationRules(ad.getDurationRules());
         return adUpdateDto;
     }

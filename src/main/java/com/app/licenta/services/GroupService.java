@@ -3,6 +3,7 @@ package com.app.licenta.services;
 import com.app.licenta.entities.*;
 import com.app.licenta.repositories.GroupRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class GroupService {
     @Autowired
     private ChildService childService;
 
+    @Transactional
     public Group createGroup(Integer activityId, Integer adId) {
         Activity activity = activityService.getById(activityId);
         Ad ad = adService.getById(adId);
@@ -30,6 +32,7 @@ public class GroupService {
         group.setMinAge(ad.getMinAge());
         group.setMaxAge(ad.getMaxAge());
         group.setGender(ad.getGender());
+        group.setLocation(ad.getLocation());
         group.setStatus(ChildrenGroupStatus.ACTIVE);
         group.setActivity(activity);
         group.setAd(ad);
@@ -56,10 +59,6 @@ public class GroupService {
                 .orElseThrow(() -> new EntityNotFoundException("Group with id " + id + " not found"));
     }
 
-//    public List<Activity> findAll() {
-//        return activityRepository.findAll();
-//    }
-
     public Set<Group> findAllByActivityId(Integer activityId) {
         return groupRepository.findAllByActivityId(activityId);
     }
@@ -72,12 +71,16 @@ public class GroupService {
         return groupRepository.findAllByChildId(childId);
     }
 
-    // update
-
-    public Group update(Group group) {
-        if (!groupRepository.existsById(group.getId())) {
-            throw new EntityNotFoundException("Group with id " + group.getId() + " not found");
-        }
+    public Group update(Integer groupId, Group groupToUpdate) {
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group with id " + groupId + " not found"));
+        group.setTitle(groupToUpdate.getTitle());
+        group.setDescription(groupToUpdate.getDescription());
+        group.setMinAge(groupToUpdate.getMinAge());
+        group.setMaxAge(groupToUpdate.getMaxAge());
+        group.setGender(groupToUpdate.getGender());
+        group.setLocation(groupToUpdate.getLocation());
+        group.setStatus(groupToUpdate.getStatus());
         return groupRepository.save(group);
     }
 

@@ -19,6 +19,7 @@ public class AdUpdateDto {
     private LocalDate endDate;
     private AdStatus status;
     private Integer totalSpots;
+    private String location;
     private Set<DurationRule> durationRules = new HashSet<>();
 
     public Integer getId() {
@@ -115,6 +116,14 @@ public class AdUpdateDto {
 
     public void setTotalSpots(Integer totalSpots) {
         this.totalSpots = totalSpots;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public Set<DurationRule> getDurationRules() {

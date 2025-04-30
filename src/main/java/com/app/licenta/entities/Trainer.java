@@ -25,6 +25,9 @@ public class Trainer {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -36,7 +39,7 @@ public class Trainer {
     @Column(name = "fcm_token")
     private String fcmToken;
 
-    @Column(name="reviews_grade")
+    @Column(name = "reviews_grade")
     private Double reviewsGrade;
 
     @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
@@ -47,6 +50,9 @@ public class Trainer {
 
     @OneToMany(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<TrainerReview> trainerReviews = new HashSet<>();
+
+    @OneToOne(mappedBy = "trainer", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private TrainerImage image;
 
 //    @OneToMany(mappedBy = "authorTrainer", cascade = {})
 //    private Set<SessionComment> sessionComments = new HashSet<>();
@@ -106,6 +112,14 @@ public class Trainer {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Gender getGender() {
         return gender;
     }
@@ -160,5 +174,13 @@ public class Trainer {
 
     public void setReviewsGrade(Double reviewsGrade) {
         this.reviewsGrade = reviewsGrade;
+    }
+
+    public TrainerImage getImage() {
+        return image;
+    }
+
+    public void setImage(TrainerImage image) {
+        this.image = image;
     }
 }
