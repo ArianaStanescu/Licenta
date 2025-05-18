@@ -44,8 +44,12 @@ public class TrainerController {
     }
 
     @PutMapping("/{id}")
-    public TrainerDto update(@RequestBody TrainerDto trainerDto, @PathVariable Integer id) {
-        return trainerMapper.trainerToTrainerDto(trainerService.update(id, trainerMapper.trainerDtoToTrainer(trainerDto)));
+    public TrainerDto update(@PathVariable("id") Integer id,
+                             @RequestPart("trainer") TrainerDto trainerDto,
+                             @RequestPart(value = "image", required = false) MultipartFile imageFile) throws IOException {
+        Trainer trainerToUpdate = trainerMapper.trainerDtoToTrainer(trainerDto);
+        Trainer createdTrainer = trainerService.editTrainer(id, trainerToUpdate, imageFile != null ? imageFile.getBytes() : null);
+        return trainerMapper.trainerToTrainerDto(createdTrainer);
     }
 
     @PutMapping("/update-fcm-token/{id}")
