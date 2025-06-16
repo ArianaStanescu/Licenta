@@ -80,8 +80,8 @@ public class ParentService {
                 .orElseThrow(() -> new EntityNotFoundException("Parent with id " + id + " not found"));
         parentToUpdate.setFirstName(parent.getFirstName());
         parentToUpdate.setLastName(parent.getLastName());
-        parentToUpdate.setEmail(parent.getEmail());
         parentToUpdate.setPhoneNumber(parent.getPhoneNumber());
+        parentToUpdate.setGender(parent.getGender());
 
         parentRepository.save(parentToUpdate);
         return parentToUpdate;

@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TrainerService {
@@ -38,9 +39,10 @@ public class TrainerService {
         return trainerRepository.findAll();
     }
 
-    public Trainer update(Integer id, Trainer trainer) {
-        Trainer trainerToUpdate = trainerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + id + " not found"));
+    @Transactional
+    public Trainer editTrainer(Integer trainerId, Trainer trainer, byte[] imageData) {
+        Trainer trainerToUpdate = trainerRepository.findById(trainerId)
+                .orElseThrow(() -> new EntityNotFoundException("Trainer with id " + trainerId + " not found"));
         trainerToUpdate.setFirstName(trainer.getFirstName());
         trainerToUpdate.setLastName(trainer.getLastName());
         trainerToUpdate.setGender(trainer.getGender());
@@ -48,9 +50,18 @@ public class TrainerService {
         trainerToUpdate.setPhoneNumber(trainer.getPhoneNumber());
         trainerToUpdate.setEmail(trainer.getEmail());
         trainerToUpdate.setActivities(trainer.getActivities());
+        trainerToUpdate.setDescription(trainer.getDescription());
 
-        trainerRepository.save(trainerToUpdate);
-        return trainerToUpdate;
+        if(imageData != null) {
+            TrainerImage trainerImage = Optional.ofNullable(trainerToUpdate.getImage())
+                    .orElseGet(TrainerImage::new);
+
+            trainerImage.setImageData(imageData);
+            trainerToUpdate.setImage(trainerImage);
+            trainerImage.setTrainer(trainerToUpdate);
+        }
+
+        return trainerRepository.save(trainerToUpdate);
     }
 
     public void updateFcmToken(Integer trainerId, String fcmToken) {
