@@ -54,7 +54,9 @@ public class GroupClosingScheduler {
                             .map(Session::getEndDateTime)
                             .sorted(Comparator.reverseOrder())
                             .toList()
-                            .get(0);
+                            .stream()
+                            .findFirst()
+                            .orElse(adEndDate);
                     LocalDateTime endDate = adEndDate.isBefore(lastSession) ? lastSession : adEndDate;
                     byte[] attachment = pdfDiplomaGenerator.generateDiploma(child.getFullName(), group.getActivity().getTitle(), group.getAd().getStartDate(), endDate.toLocalDate(), group.getActivity().getTrainer().getFullName());
                     emailService.sendGroupCompletedDiplomaEmail("stanescu.ariana02@gmail.com", child.getFullName(), group.getActivity().getTitle(), attachment);

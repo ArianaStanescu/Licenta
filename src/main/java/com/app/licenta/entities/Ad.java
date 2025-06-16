@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,6 +63,13 @@ public class Ad {
     @ManyToOne
     @JoinColumn(name = "activity_id")
     private Activity activity;
+
+    @Version
+    @Column(name = "version")
+    private Integer version;
+
+    @Column(name = "last_enrollment_request_updated")
+    private LocalDateTime lastEnrollmentRequestUpdated;
 
     @OneToMany(mappedBy = "ad", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private Set<EnrollmentRequest> enrollmentRequests = new HashSet<>();
@@ -195,6 +203,22 @@ public class Ad {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public LocalDateTime getLastEnrollmentRequestUpdated() {
+        return lastEnrollmentRequestUpdated;
+    }
+
+    public void setLastEnrollmentRequestUpdated(LocalDateTime lastEnrollmentRequestUpdated) {
+        this.lastEnrollmentRequestUpdated = lastEnrollmentRequestUpdated;
     }
 
     public Set<EnrollmentRequest> getEnrollmentRequests() {

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class EnrollmentRequestService {
     public EnrollmentRequest createEnrollmentRequest(Integer adId, Integer childId) {
         Ad ad = adService.getById(adId);
         Child child = childService.getById(childId);
+        ad.setLastEnrollmentRequestUpdated(LocalDateTime.now());
 
         boolean alreadyRequested = ad.getEnrollmentRequests().stream()
                 .anyMatch(er -> er.getChild().getId().equals(childId));

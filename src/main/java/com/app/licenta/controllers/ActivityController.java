@@ -39,6 +39,11 @@ public class ActivityController {
         return activityMapper.activityListToActivityDtoList(activityService.findAllByTrainerId(trainerId));
     }
 
+    @GetMapping("/list-active-names")
+    public Set<String> findActiveActivitiesNames() {
+        return activityService.findActiveActivitiesNames();
+    }
+
     @PostMapping("/create/{trainerId}")
     public ActivityDto create(@PathVariable Integer trainerId, @RequestBody ActivityDto activityDto) {
         Trainer trainer = trainerService.getById(trainerId);

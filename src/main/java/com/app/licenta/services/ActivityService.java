@@ -32,6 +32,10 @@ public class ActivityService {
         return activityRepository.findAllByTrainerId(trainerId);
     }
 
+    public Set<String> findActiveActivitiesNames() {
+        return activityRepository.findActiveActivityNames();
+    }
+
     public Activity update(Integer id, Activity activity) {
         Activity activityToUpdate = activityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Activity with id " + id + " not found"));

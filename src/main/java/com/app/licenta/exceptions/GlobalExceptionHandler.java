@@ -1,6 +1,7 @@
 package com.app.licenta.exceptions;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,8 +22,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<?> handleIllegalStateException(IllegalStateException ex) {
         ErrorDetail error = new ErrorDetail(ex.getMessage());
-        return new ResponseEntity<>(error, CONFLICT); // 409
+        return new ResponseEntity<>(error, CONFLICT);
     }
 
+    @ExceptionHandler(StaleObjectStateException.class)
+    public ResponseEntity<?> handleOptimisticLockingException(StaleObjectStateException ex) {
+        ErrorDetail error = new ErrorDetail(ex.getMessage());
+        return new ResponseEntity<>(error, CONFLICT);
+    }
 
 }
