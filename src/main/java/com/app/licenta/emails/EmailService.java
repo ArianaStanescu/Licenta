@@ -36,7 +36,7 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("stanescu.ariana02@gmail.com");
         message.setSubject(subject);
-        message.setText(body + "\n, supposed to be sent to: " + to);
+        message.setText(body);
         mailSender.send(message);
     }
 
