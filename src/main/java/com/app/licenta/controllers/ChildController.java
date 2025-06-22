@@ -11,7 +11,10 @@ import com.app.licenta.services.ParentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -38,7 +41,7 @@ public class ChildController {
 
     @GetMapping("/list/{parentId}")
     public Set<ChildDto> findAllByParentId(@PathVariable Integer parentId) {
-        return childMapper.childListToChildDtoList(childService.findAllByParentId(parentId));
+        return childMapper.childListToChildDtoList(childService.findAllByParentId(parentId)).stream().sorted(Comparator.comparing(ChildDto::getFirstName)).collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @PostMapping("/create/{parentId}")
